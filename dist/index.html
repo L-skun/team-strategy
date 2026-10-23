@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f5148">
+  <title>团队赛 Ban / Pick 策略台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">TEAM MATCH LAB</p>
+        <h1>团队赛策略台</h1>
+        <p class="hero-copy">选定双方卡组、校准胜率，一次比较最值得采用的 Ban / Pick 方案。</p>
+      </div>
+      <div class="hero-badge" aria-label="计算引擎状态">
+        <span class="status-dot" id="engineDot"></span>
+        <span id="engineStatus">正在检查计算引擎</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="notice" id="demoNotice" hidden>
+        <span class="notice-icon">i</span>
+        <div><strong>当前为随机示例数据</strong><p>结果仅用于体验流程，请导入或填写真实胜率后再用于决策。</p></div>
+      </section>
+
+      <nav class="steps" aria-label="设置步骤">
+        <a href="#decks"><span>1</span>选择卡组</a>
+        <a href="#matrix"><span>2</span>填写胜率</a>
+        <a href="#results"><span>3</span>查看策略</a>
+      </nav>
+
+      <section class="panel" id="decks">
+        <div class="section-head">
+          <div><p class="section-kicker">STEP 01</p><h2>选择本场卡组</h2></div>
+          <p class="section-help">双方各选择 4–6 套。每方禁用对手 1 套，随后从余下卡组中选 3 套出战。</p>
+        </div>
+        <div class="deck-columns">
+          <div class="deck-side">
+            <div class="side-head"><h3>我方卡组</h3><span class="count" id="ourCount">0 / 6</span></div>
+            <div class="deck-grid" id="ourDeckList"></div>
+          </div>
+          <div class="deck-side opponent-side">
+            <div class="side-head"><h3>对手卡组</h3><span class="count" id="opponentCount">0 / 6</span></div>
+            <div class="deck-grid" id="opponentDeckList"></div>
+            <form class="add-deck" id="addOpponentForm">
+              <label class="sr-only" for="newOpponentName">新对手卡组名称</label>
+              <input id="newOpponentName" maxlength="24" placeholder="临时添加对手卡组" autocomplete="off">
+              <button type="submit" class="button button-secondary">添加</button>
+            </form>
+          </div>
+        </div>
+        <p class="inline-error" id="deckError" role="alert"></p>
+      </section>
+
+      <section class="panel" id="matrix">
+        <div class="section-head matrix-heading">
+          <div><p class="section-kicker">STEP 02</p><h2>编辑对阵胜率</h2></div>
+          <div class="segmented" role="tablist" aria-label="胜率视角">
+            <button class="segment active" id="ourViewTab" data-view="our" role="tab" aria-selected="true">我方视角</button>
+            <button class="segment" id="opponentViewTab" data-view="opponent" role="tab" aria-selected="false">对手视角</button>
+          </div>
+        </div>
+        <div class="matrix-context" id="matrixContext"></div>
+        <div class="table-wrap" id="matrixWrap"></div>
+        <div class="legend">
+          <span><i class="legend-swatch low"></i>劣势</span>
+          <span><i class="legend-swatch even"></i>均势</span>
+          <span><i class="legend-swatch high"></i>优势</span>
+          <span><i class="legend-swatch auto"></i>自动估算</span>
+        </div>
+        <p class="inline-error" id="matrixError" role="alert"></p>
+      </section>
+
+      <section class="panel settings-panel">
+        <div class="section-head compact"><div><p class="section-kicker">CALCULATION</p><h2>计算设置</h2></div></div>
+        <div class="settings-grid">
+          <label class="field"><span>胜率信心补正 <b id="correctionValue">+20%</b></span><input id="correction" type="range" min="0" max="0.5" step="0.01" value="0.2"></label>
+          <fieldset class="field pairing-field"><legend>策略模型</legend><label><input type="radio" name="mode" value="predictive" checked><span>主观预测</span></label><label><input type="radio" name="mode" value="robust"><span>稳健保障</span></label></fieldset>
+          <fieldset class="field pairing-field"><legend>出战配对方式</legend><label><input type="radio" name="pairing" value="ordered" checked><span>同时暗排</span></label><label><input type="radio" name="pairing" value="random"><span>随机配对</span></label></fieldset>
+        </div>
+        <p class="setting-note" id="correctionHelp">对手视角未填写的格子，将使用“我方败率 + 20%”估算，最高不超过 100%。</p>
+      </section>
+
+      <div class="action-row">
+        <button class="button button-primary" id="solveButton"><span>计算推荐策略</span><small>比较所有合法组合</small></button>
+        <button class="button button-ghost" id="saveButton">保存到本机</button>
+        <button class="button button-ghost" id="exportButton">导出 JSON</button>
+        <label class="button button-ghost file-button">导入 JSON<input id="importInput" type="file" accept="application/json,.json"></label>
+        <label class="button button-ghost file-button">导入 Excel<input id="excelInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+        <button class="button button-text" id="resetButton">重置示例</button>
+      </div>
+      <p class="save-status" id="saveStatus" aria-live="polite"></p>
+
+      <section class="results" id="results" aria-live="polite">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-mark">↗</div>
+          <h2>策略结果会显示在这里</h2>
+          <p>完成卡组与胜率设置后，点击“计算推荐策略”。</p>
+        </div>
+        <div id="resultContent" hidden>
+          <div class="results-head"><div><p class="section-kicker">RECOMMENDATION</p><h2>推荐策略 Top 5</h2></div><p id="resultSummary"></p></div>
+          <div class="result-list" id="resultList"></div>
+        </div>
+      </section>
+    </main>
+    <footer>所有胜率均为模型估计，请结合阵容情报与临场判断。</footer>
+  </div>
+  <script src="demo-data.js"></script>
+  <script src="xlsx-import.js"></script>
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
