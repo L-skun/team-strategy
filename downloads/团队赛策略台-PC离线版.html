@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f5148">
+  <title>团队赛策略台 · PC离线版</title>
+  <style>:root{--bg:#f5f1e8;--surface:#fffdf8;--ink:#173b37;--muted:#667a76;--line:#d9dfd8;--teal:#0f5148;--teal-2:#197367;--teal-soft:#e3eee9;--orange:#e7792b;--orange-soft:#fff0df;--red:#b64b3d;--shadow:0 12px 36px rgba(20,58,53,.08);--radius:20px}
+.settings-grid{grid-template-columns:minmax(220px,1.2fr) repeat(2,minmax(220px,1fr))!important;gap:28px!important}.add-deck .button-secondary{white-space:nowrap;min-width:64px}.branches{display:grid;gap:6px;margin-top:8px}.branch{display:grid;grid-template-columns:minmax(110px,.65fr) minmax(180px,1.25fr) auto;gap:12px;align-items:center;padding:8px 10px;border-radius:9px;background:#f6f5f0}.branch-ban{color:var(--ink);font-weight:700}.branch-order{color:var(--teal);font-weight:650}.branch-score{white-space:nowrap}.assumptions{grid-column:1/-1;color:var(--muted);font-size:11px;margin-top:-5px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;line-height:1.5}button,input{font:inherit}button{color:inherit}.shell{width:min(1180px,calc(100% - 40px));margin:auto}.hero{display:flex;justify-content:space-between;align-items:flex-end;gap:28px;padding:52px 0 30px}.eyebrow,.section-kicker{margin:0 0 7px;color:var(--orange);font-size:12px;font-weight:800;letter-spacing:.18em}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1;margin:0 0 16px;letter-spacing:-.05em}.hero-copy{margin:0;max-width:650px;color:var(--muted);font-size:17px}.hero-badge{display:flex;align-items:center;gap:9px;flex:0 0 auto;background:rgba(255,253,248,.75);border:1px solid var(--line);border-radius:99px;padding:9px 14px;font-size:13px}.status-dot{width:8px;height:8px;border-radius:50%;background:#c0a26c}.status-dot.ready{background:#45a472;box-shadow:0 0 0 4px #45a47222}.status-dot.missing{background:var(--orange)}.notice{display:flex;gap:13px;align-items:flex-start;background:var(--orange-soft);border:1px solid #f2c28e;border-radius:15px;padding:14px 17px;margin-bottom:18px;color:#7d461e}.notice-icon{display:grid;place-items:center;width:22px;height:22px;flex:0 0 auto;border-radius:50%;background:var(--orange);color:#fff;font:700 13px serif}.notice strong{font-size:14px}.notice p{margin:2px 0 0;font-size:13px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}.steps a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;color:var(--muted);text-decoration:none;font-size:13px}.steps span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#e5e3da;font-weight:700;color:var(--teal)}.steps a:hover{background:#fff8}.panel,.results{background:var(--surface);border:1px solid rgba(15,81,72,.11);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;margin-bottom:18px}.section-head{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:25px}.section-head h2,.results-head h2{font-size:24px;letter-spacing:-.03em;margin:0}.section-help{max-width:540px;margin:4px 0 0;color:var(--muted);font-size:13px}.deck-columns{display:grid;grid-template-columns:1fr 1fr;gap:34px}.opponent-side{border-left:1px solid var(--line);padding-left:34px}.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.side-head h3{margin:0;font-size:15px}.count{background:var(--teal-soft);color:var(--teal);border-radius:99px;padding:3px 9px;font-size:12px;font-weight:700}.count.invalid{background:var(--orange-soft);color:#94511f}.deck-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.deck-card{position:relative;display:flex;align-items:center;gap:10px;min-height:50px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;transition:.16s}.deck-card:hover{border-color:#9ebcb5;transform:translateY(-1px)}.deck-card.selected{border-color:var(--teal-2);background:var(--teal-soft);box-shadow:inset 0 0 0 1px var(--teal-2)}.deck-card input{position:absolute;opacity:0}.deck-check{display:grid;place-items:center;width:20px;height:20px;border:1px solid #a9b8b4;border-radius:6px;background:#fff;color:#fff;font-size:12px;flex:0 0 auto}.selected .deck-check{background:var(--teal);border-color:var(--teal)}.selected .deck-check:after{content:"✓"}.deck-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;font-weight:650}.custom-tag{margin-left:auto;color:var(--orange);font-size:10px}.add-deck{display:flex;gap:8px;margin-top:12px}.add-deck input{width:100%;min-width:0;border:1px dashed #aab8b4;background:#faf9f4;border-radius:10px;padding:10px 12px;outline:none}.add-deck input:focus{border-style:solid;border-color:var(--teal)}.button{border:0;border-radius:11px;cursor:pointer;font-weight:700;transition:.15s}.button:active{transform:translateY(1px)}.button-secondary{padding:9px 16px;background:var(--teal-soft);color:var(--teal)}.inline-error{min-height:20px;margin:12px 0 -8px;color:var(--red);font-size:13px}.matrix-heading{align-items:center;margin-bottom:18px}.segmented{display:flex;padding:4px;background:#edece6;border-radius:11px}.segment{border:0;background:transparent;border-radius:8px;padding:8px 15px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}.segment.active{background:#fff;color:var(--teal);box-shadow:0 2px 8px #284c4520}.matrix-context{margin-bottom:12px;color:var(--muted);font-size:13px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px;max-height:560px}.rate-table{width:100%;border-collapse:separate;border-spacing:0;min-width:620px;font-size:13px}.rate-table th{position:sticky;top:0;z-index:2;background:#edf1ed;color:#4e6661;padding:11px 9px;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}.rate-table th:first-child{left:0;z-index:3;text-align:left;min-width:140px}.rate-table td{border-bottom:1px solid #e8e9e4;border-right:1px solid #e8e9e4;padding:7px}.rate-table tr:last-child td{border-bottom:0}.rate-table td:first-child{position:sticky;left:0;z-index:1;background:var(--surface);font-weight:700;white-space:nowrap}.rate-input-wrap{position:relative;min-width:82px}.rate-input{width:100%;border:1px solid transparent;border-radius:8px;background:#f1f3ef;padding:8px 24px 8px 8px;text-align:center;outline:none;font-variant-numeric:tabular-nums}.rate-input:focus{border-color:var(--teal-2);background:#fff}.rate-input.rate-low{background:#f8e6e2}.rate-input.rate-even{background:#f3efe3}.rate-input.rate-high{background:#e3efe8}.rate-input.is-auto{background:#eef1ef;color:#70817d;font-style:italic}.rate-input.invalid{border-color:var(--red);background:#fff0ed}.percent-mark{position:absolute;right:8px;top:8px;color:#869490;pointer-events:none}.legend{display:flex;flex-wrap:wrap;gap:15px;margin-top:11px;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:5px}.legend-swatch{width:10px;height:10px;border-radius:3px}.legend-swatch.low{background:#f1c8c0}.legend-swatch.even{background:#e7ddbd}.legend-swatch.high{background:#c0dfcc}.legend-swatch.auto{background:#dce2df}.settings-panel{padding-bottom:23px}.section-head.compact{margin-bottom:19px}.settings-grid{display:grid;grid-template-columns:minmax(240px,1fr) minmax(260px,1fr);gap:42px}.field{display:flex;flex-direction:column;gap:10px;font-size:13px;font-weight:700}.field b{float:right;color:var(--orange)}input[type=range]{width:100%;accent-color:var(--teal)}.pairing-field{border:0;padding:0;margin:0}.pairing-field legend{margin-bottom:9px}.pairing-field label{display:inline-flex;align-items:center;gap:7px;margin-right:20px;font-weight:500}.pairing-field input{accent-color:var(--teal)}.setting-note{margin:14px 0 0;color:var(--muted);font-size:12px}.action-row{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:22px 0 4px}.button-primary{display:flex;align-items:flex-start;flex-direction:column;background:var(--teal);color:#fff;padding:12px 24px;margin-right:7px;box-shadow:0 7px 18px #0f514833}.button-primary span{font-size:15px}.button-primary small{font-size:10px;font-weight:500;opacity:.68}.button-primary:hover{background:#0c453d}.button-primary:disabled{opacity:.55;cursor:wait}.button-ghost{padding:11px 14px;border:1px solid #cdd5d1;background:rgba(255,253,248,.6);color:var(--teal)}.button-ghost:hover{background:#fff}.button-text{padding:10px;background:transparent;color:var(--muted)}.file-button input{position:absolute;width:1px;height:1px;opacity:0}.save-status{height:20px;margin:3px 0 9px;color:var(--teal);font-size:12px}.results{min-height:230px}.empty-state{text-align:center;padding:26px 10px}.empty-mark{display:grid;place-items:center;width:46px;height:46px;margin:0 auto 13px;border-radius:14px;background:var(--teal-soft);color:var(--teal);font-size:24px}.empty-state h2{margin:0 0 7px;font-size:19px}.empty-state p{margin:0;color:var(--muted);font-size:13px}.results-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px}.results-head p{margin:0;color:var(--muted);font-size:12px}.result-list{display:grid;gap:12px}.result-card{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:18px;align-items:start;border:1px solid var(--line);border-radius:15px;padding:17px;background:#fff}.result-card:first-child{border-color:#e7ad6f;background:linear-gradient(135deg,#fffaf2,#fff)}.rank{font:800 24px/1 Georgia,serif;color:var(--teal)}.rank small{display:block;font:700 9px/1.4 system-ui;color:var(--muted);letter-spacing:.1em}.strategy-main h3{margin:0 0 7px;font-size:15px}.strategy-tags{display:flex;flex-wrap:wrap;gap:6px}.tag{border-radius:6px;padding:4px 7px;background:#edf2ef;color:#3f625b;font-size:11px}.tag.ban{background:var(--orange-soft);color:#99541f}.win-rate{text-align:right;color:var(--teal);font:800 25px/1.1 Georgia,serif}.win-rate small{display:block;margin-top:4px;color:var(--muted);font:500 10px system-ui}.response-plan{grid-column:2/-1;border-top:1px dashed var(--line);padding-top:10px;color:var(--muted);font-size:12px}.response-plan strong{color:var(--ink)}footer{text-align:center;padding:14px 0 45px;color:#85918e;font-size:11px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.shell{width:min(100% - 20px,1180px)}.hero{display:block;padding:32px 4px 22px}.hero-copy{font-size:14px}.hero-badge{display:inline-flex;margin-top:17px}.steps a{justify-content:center;padding:8px 4px;font-size:11px}.steps span{width:20px;height:20px}.panel,.results{padding:19px 15px;border-radius:16px}.section-head{display:block;margin-bottom:18px}.section-help{margin-top:9px}.deck-columns{grid-template-columns:1fr;gap:24px}.opponent-side{border-left:0;border-top:1px solid var(--line);padding:22px 0 0}.deck-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.matrix-heading .segmented{margin-top:14px;width:100%}.segment{flex:1}.table-wrap{margin:0 -15px;border-left:0;border-right:0;border-radius:0}.rate-table th:first-child{min-width:118px}.settings-grid{grid-template-columns:1fr;gap:20px}.action-row{position:sticky;bottom:8px;z-index:6;padding:8px;background:rgba(245,241,232,.94);backdrop-filter:blur(8px);border:1px solid #ddd9cf;border-radius:14px}.button-primary{width:100%;align-items:center;margin:0}.action-row .button-ghost,.action-row .button-text{flex:1;font-size:11px;padding:9px 4px}.results-head{display:block}.results-head>p{margin-top:6px}.result-card{grid-template-columns:40px minmax(0,1fr);gap:12px}.win-rate{grid-column:2;text-align:left;font-size:22px}.response-plan{grid-column:1/-1}.save-status{text-align:center}.notice{margin-bottom:12px}}
+.demo-result-warning{color:#a9571d!important;font-weight:700}.results{scroll-margin-top:12px}@media(max-width:390px){.deck-grid{grid-template-columns:1fr}.steps a{gap:5px}.hero h1{font-size:36px}.pairing-field label{margin-right:10px}}
+@media(max-width:760px){.settings-grid{grid-template-columns:1fr!important;gap:20px!important}.branch{grid-template-columns:1fr}.branch-score{white-space:normal}}
+
+.exclusions{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}.exclusions h4{margin:0}.exclusions small{color:var(--muted);font-weight:400}.exclusion-list{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:12px}.exclusion-list label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}.exclusion-list input{accent-color:var(--orange)}.field select{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}.branch-group{padding:10px 0;border-top:1px solid var(--line)}.branch-group>.branch{margin-top:6px}.branch-score{white-space:normal;overflow-wrap:anywhere}
+
+.deck-editor{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}.deck-editor summary{cursor:pointer;font-weight:700}.editor-fields{display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:12px;margin-top:14px}.editor-fields label,.editor-actions label{display:flex;flex-direction:column;gap:6px;font-size:13px}.editor-fields input,.editor-fields select,.editor-actions select{font:inherit;padding:9px;border:1px solid var(--line);border-radius:8px;max-width:100%;min-width:0;background:var(--surface);color:var(--ink)}.editor-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-top:14px}.excel-save{margin-top:18px}.excel-save h3{margin:0}.excel-save .matrix-context{overflow-wrap:anywhere;margin-top:12px}.side-head{flex-wrap:wrap;gap:8px}@media(max-width:760px){.editor-fields{grid-template-columns:1fr}.editor-actions>*{flex:1 1 160px}}
+
+.bulk-editor{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}.bulk-editor summary{cursor:pointer;font-size:14px;font-weight:700}.bulk-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}.bulk-fields label{display:flex;flex-direction:column;gap:6px;font-size:13px;min-width:0}.bulk-fields select,.bulk-fields input{font:inherit;width:100%;min-width:0;border:1px solid var(--line);border-radius:8px;padding:9px;background:var(--surface);color:var(--ink)}.bulk-editor .button{margin-top:12px}.opponent-reset-tools{margin-bottom:14px}.opponent-reset-tools[hidden]{display:none}.rate-reset{display:block;margin:5px auto 0;padding:4px 12px;min-height:28px;border:1px solid var(--line);border-radius:6px;color:var(--teal);background:var(--teal-soft);font:inherit;font-size:11px;cursor:pointer}.rate-reset:disabled{opacity:.45;cursor:default}.bulk-editor button:disabled{opacity:.5;cursor:default}#bulkStatus{overflow-wrap:anywhere}@media(max-width:760px){.bulk-fields{grid-template-columns:1fr}.bulk-editor .button{width:100%}.rate-reset{min-height:32px}}
+</style>
+<script>window.MOBILE_OFFLINE=true;</script></head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">TEAM MATCH LAB</p>
+        <h1>团队赛策略台</h1>
+        <p class="hero-copy">选定双方卡组、校准胜率，一次比较最值得采用的 Ban / Pick 方案。</p>
+      </div>
+      <div class="hero-badge" aria-label="计算引擎状态">
+        <span class="status-dot" id="engineDot"></span>
+        <span id="engineStatus">正在检查计算引擎</span>
+      </div>
+    </header>
+
+    <main>
+      <p class="matrix-context" id="workbookStatus" role="status" aria-live="polite"></p>
+      <section class="notice" id="demoNotice" hidden>
+        <span class="notice-icon">i</span>
+        <div><strong>当前为随机示例数据</strong><p>结果仅用于体验流程，请导入或填写真实胜率后再用于决策。</p></div>
+      </section>
+
+      <nav class="steps" aria-label="设置步骤">
+        <a href="#decks"><span>1</span>选择卡组</a>
+        <a href="#matrix"><span>2</span>填写胜率</a>
+        <a href="#results"><span>3</span>查看策略</a>
+      </nav>
+
+      <section class="panel" id="decks">
+        <div class="section-head">
+          <div><p class="section-kicker">STEP 01</p><h2>选择本场卡组</h2></div>
+          <p class="section-help">双方各选择 4–6 套。每方禁用对手 1 套，随后从余下卡组中选 3 套出战。</p>
+        </div>
+        <div class="deck-columns">
+          <div class="deck-side">
+            <div class="side-head"><h3>我方卡组</h3><span class="count" id="ourCount">0 / 6</span></div>
+            <div class="deck-grid" id="ourDeckList"></div>
+            <div class="exclusions"><h4>我不想上 <small id="availableOurCount"></small></h4><p class="setting-note">勾选后不会出战，但对手仍认为这些卡组可能出战。排除后须至少保留 4 套；所有公开卡组的胜率仍需填写。</p><div id="excludedOurList" class="exclusion-list"></div></div>
+          </div>
+          <div class="deck-side opponent-side">
+            <div class="side-head"><h3>对手卡组</h3><button type="button" class="button button-secondary" id="clearOpponent">全部取消选择</button><span class="count" id="opponentCount">0 / 6</span></div>
+            <div class="deck-grid" id="opponentDeckList"></div>
+            <form class="add-deck" id="addOpponentForm">
+              <label class="sr-only" for="newOpponentName">新对手卡组名称</label>
+              <input id="newOpponentName" maxlength="24" placeholder="临时添加对手卡组" autocomplete="off">
+              <button type="submit" class="button button-secondary">添加</button>
+            </form>
+          </div>
+        </div>
+        <details class="deck-editor"><summary>管理卡组池（新增、重命名、删除）</summary>
+          <div class="editor-fields"><label>修改哪方<select id="editDeckSide"><option value="our">我方</option><option value="opponent">对手</option></select></label><label>现有卡组<select id="editDeckName"></select></label><label>新名称<input id="deckNameInput" maxlength="100" placeholder="输入新增或修改后的名称"></label></div>
+          <div class="editor-actions"><button class="button button-secondary" id="addDeck">新增卡组</button><button class="button button-secondary" id="renameDeck">重命名所选卡组</button><button class="button button-text" id="deleteDeck">删除所选卡组及胜率</button></div>
+        </details>
+        <p class="inline-error" id="deckError" role="alert"></p>
+      </section>
+
+      <section class="panel" id="matrix">
+        <div class="section-head matrix-heading">
+          <div><p class="section-kicker">STEP 02</p><h2>编辑对阵胜率</h2></div>
+          <div class="segmented" role="tablist" aria-label="胜率视角">
+            <button class="segment active" id="ourViewTab" data-view="our" role="tab" aria-selected="true">我方视角</button>
+            <button class="segment" id="opponentViewTab" data-view="opponent" role="tab" aria-selected="false">对手视角</button>
+          </div>
+        </div>
+        <div class="matrix-context" id="matrixContext"></div>
+        <div class="opponent-reset-tools" id="opponentResetTools" hidden>
+          <button type="button" class="button button-secondary" id="resetOpponentAll">全部复位为自动补正（含未选卡组）</button>
+          <p class="setting-note">单场可点击格子下方“复位”。复位后随我方胜率及信心补正自动变化。</p>
+        </div>
+        <details class="bulk-editor">
+          <summary>整行 / 整列批量调整胜率</summary>
+          <div class="bulk-fields">
+            <label>调整范围<select id="bulkScope"><option value="selected">当前表格中的对局</option><option value="pool">全部卡组池中的对局</option></select></label>
+            <label>方向<select id="bulkAxis"><option value="row">整行</option><option value="column">整列</option></select></label>
+            <label><span id="bulkTargetLabel">卡组</span><select id="bulkTarget"></select></label>
+            <label>调整方式<select id="bulkMode"><option value="set">统一设为固定胜率</option><option value="points">增减固定百分点</option><option value="relative">按原胜率比例增减</option></select></label>
+            <label><span id="bulkValueLabel">胜率（%）</span><input id="bulkValue" type="number" inputmode="decimal" step="any" min="0" max="100" placeholder="例如 50"></label>
+          </div>
+          <p class="setting-note" id="bulkHelp"></p>
+          <button type="button" class="button button-secondary" id="applyBulk">应用到指定行 / 列</button>
+        </details>
+        <p id="bulkStatus" class="matrix-context" role="status" aria-live="polite"></p>
+        <div class="table-wrap" id="matrixWrap"></div>
+        <div class="legend">
+          <span><i class="legend-swatch low"></i>劣势</span>
+          <span><i class="legend-swatch even"></i>均势</span>
+          <span><i class="legend-swatch high"></i>优势</span>
+          <span><i class="legend-swatch auto"></i>自动估算</span>
+        </div>
+        <p class="inline-error" id="matrixError" role="alert"></p>
+      </section>
+
+      <section class="panel settings-panel">
+        <div class="section-head compact"><div><p class="section-kicker">CALCULATION</p><h2>计算与默认设置</h2></div></div>
+        <div class="settings-grid">
+          <label class="field"><span>推荐 Ban 策略数量</span><select id="topN" aria-label="推荐 Ban 策略数量"></select></label>
+          <label class="field"><span>胜率信心补正 <b id="correctionValue">+20%</b></span><input id="correction" type="range" min="0" max="0.5" step="0.01" value="0.2"></label>
+          <fieldset class="field pairing-field"><legend>策略模型</legend><label><input type="radio" name="mode" value="predictive" checked><span>主观预测</span></label><label><input type="radio" name="mode" value="robust"><span>稳健保障</span></label></fieldset>
+          <fieldset class="field pairing-field"><legend>出战配对方式</legend><label><input type="radio" name="pairing" value="ordered" checked><span>同时暗排</span></label><label><input type="radio" name="pairing" value="random"><span>随机配对</span></label></fieldset>
+        </div>
+        <p class="setting-note">以下设置修改后自动保存，下次打开沿用，无需重新调整。</p>
+        <p class="setting-note" id="correctionHelp">对手视角未填写的格子，将使用“我方败率 + 20%”估算，最高不超过 100%。</p>
+      </section>
+
+      <div class="action-row">
+        <button class="button button-primary" id="solveButton"><span>计算推荐策略</span><small>比较所有合法组合</small></button>
+        <button class="button button-ghost" id="saveButton">保存胜率和默认设置</button>
+        <button class="button button-ghost" id="exportButton">导出 JSON</button>
+        <label class="button button-ghost file-button">导入 JSON<input id="importInput" type="file" accept="application/json,.json"></label>
+        <label class="button button-ghost file-button">导入 Excel<input id="excelInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+        <button class="button button-text" id="resetButton">重置示例</button>
+      </div>
+      <section class="excel-save panel"><h3>保存卡组和胜率到 Excel</h3><p class="setting-note">保存整个卡组池及双方视角胜率，空白仍留空。输出为两张标准胜率表；覆盖时会先备份原文件，不保留原文件的其他工作表、公式或自定义格式。默认设置仍单独保存在本机。</p><div class="editor-actions"><label>保存方式<select id="excelSaveMode"><option value="new">另存为新 Excel</option><option value="overwrite">覆盖锚定 Excel（先备份）</option></select></label><button class="button button-secondary" id="saveExcelButton">保存 Excel</button></div><p id="excelSaveStatus" class="matrix-context" role="status" aria-live="polite"></p></section>
+      <p class="setting-note" id="persistenceStatus" role="status" aria-live="polite">胜率、卡组选择及默认设置在修改后自动保存。</p>
+      <button type="button" class="button button-ghost" id="reloadWorkbook">选择 Excel 文件</button>
+      <p class="save-status" id="saveStatus" aria-live="polite"></p>
+
+      <section class="results" id="results" aria-live="polite">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-mark">↗</div>
+          <h2>策略结果会显示在这里</h2>
+          <p>完成卡组与胜率设置后，点击“计算推荐策略”。</p>
+        </div>
+        <div id="resultContent" hidden>
+          <div class="results-head"><div><p class="section-kicker">RECOMMENDATION</p><h2 id="resultTitle">推荐策略</h2></div><p id="resultSummary"></p></div>
+          <div class="result-list" id="resultList"></div>
+        </div>
+      </section>
+    </main>
+    <footer>所有胜率均为模型估计，请结合阵容情报与临场判断。</footer>
+  </div>
+  <script>(function (root) {
+  "use strict";
+
+  var ourDecks = ["多龙", "玛长", "沙奈朵", "猛雷鼓", "电电虫", "赛富豪"];
+  var opponentDecks = [
+    "锤龙", "自爆多龙", "1号玛长", "2号玛长", "1号沙奈朵", "2号沙奈朵",
+    "白鼓", "纯鼓", "电电虫", "N索", "伊布", "赛富豪", "恶喷", "钛晶box",
+    "竹兰的烈咬陆鲨", "祭典", "火箭队", "桥龙", "岩殿居蟹", "阿响的火暴兽",
+    "草椪皮皮", "免疫box"
+  ];
+
+  function seededRate(ourName, opponentName, rowIndex, columnIndex) {
+    var text = "team-strategy-v1|" + ourName + "|" + opponentName + "|" + rowIndex + "|" + columnIndex;
+    var hash = 2166136261;
+    for (var i = 0; i < text.length; i += 1) {
+      hash ^= text.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return Math.round((0.25 + ((hash >>> 0) % 501) / 1000) * 1000) / 1000;
+  }
+
+  var rates = ourDecks.map(function (ourName, rowIndex) {
+    return opponentDecks.map(function (opponentName, columnIndex) {
+      return seededRate(ourName, opponentName, rowIndex, columnIndex);
+    });
+  });
+
+  var data = {
+    ourDecks: ourDecks,
+    opponentDecks: opponentDecks,
+    rates: rates,
+    opponentRates: ourDecks.map(function () {
+      return opponentDecks.map(function () { return null; });
+    }),
+    demo: true
+  };
+
+  root.DEMO_DATA = data;
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = data;
+  }
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+  <script>!function(f){typeof module!='undefined'&&typeof exports=='object'?module.exports=f():typeof define!='undefined'&&define.amd?define(f):(typeof self!='undefined'?self:this).fflate=f()}(function(){var _e={};"use strict";var t=(typeof module!='undefined'&&typeof exports=='object'?function(_f){"use strict";var e,t=";var __w=require('worker_threads');__w.parentPort.on('message',function(m){onmessage({data:m})}),postMessage=function(m,t){__w.parentPort.postMessage(m,t)},close=process.exit;self=global";try{e=require("worker_threads").Worker}catch(e){}exports.default=e?function(r,n,o,a,s){var u=!1,i=new e(r+t,{eval:!0}).on("error",(function(e){return s(e,null)})).on("message",(function(e){return s(null,e)})).on("exit",(function(e){e&&!u&&s(Error("exited with code "+e),null)}));return i.postMessage(o,a),i.terminate=function(){return u=!0,e.prototype.terminate.call(i)},i}:function(e,t,r,n,o){setImmediate((function(){return o(Error("async operations unsupported - update to Node 12+ (or Node 10-11 with the --experimental-worker CLI flag)"),null)}));var a=function(){};return{terminate:a,postMessage:a}};return _f}:function(_f){"use strict";var e={};_f.default=function(r,t,s,a,n){var o=new Worker(e[t]||(e[t]=URL.createObjectURL(new Blob([r+';addEventListener("error",function(e){e=e.error;postMessage({$e$:[e.message,e.code,e.stack]})})'],{type:"text/javascript"}))));return o.onmessage=function(e){var r=e.data,t=r.$e$;if(t){var s=Error(t[0]);s.code=t[1],s.stack=t[2],n(s,null)}else n(null,r)},o.postMessage(s,a),o};return _f})({}),n=Uint8Array,r=Uint16Array,e=Int32Array,i=new n([0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,0,0,0,0]),o=new n([0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,0,0]),s=new n([16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15]),a=function(t,n){for(var i=new r(31),o=0;o<31;++o)i[o]=n+=1<<t[o-1];var s=new e(i[30]);for(o=1;o<30;++o)for(var a=i[o];a<i[o+1];++a)s[a]=a-i[o]<<5|o;return{b:i,r:s}},u=a(i,2),h=u.b,f=u.r;h[28]=258,f[258]=28;for(var l=a(o,0),c=l.b,p=l.r,v=new r(32768),d=0;d<32768;++d){var g=(43690&d)>>1|(21845&d)<<1;v[d]=((65280&(g=(61680&(g=(52428&g)>>2|(13107&g)<<2))>>4|(3855&g)<<4))>>8|(255&g)<<8)>>1}var y=function(t,n,e){for(var i=t.length,o=0,s=new r(n);o<i;++o)t[o]&&++s[t[o]-1];var a,u=new r(n);for(o=1;o<n;++o)u[o]=u[o-1]+s[o-1]<<1;if(e){a=new r(1<<n);var h=15-n;for(o=0;o<i;++o)if(t[o])for(var f=o<<4|t[o],l=n-t[o],c=u[t[o]-1]++<<l,p=c|(1<<l)-1;c<=p;++c)a[v[c]>>h]=f}else for(a=new r(i),o=0;o<i;++o)t[o]&&(a[o]=v[u[t[o]-1]++]>>15-t[o]);return a},m=new n(288);for(d=0;d<144;++d)m[d]=8;for(d=144;d<256;++d)m[d]=9;for(d=256;d<280;++d)m[d]=7;for(d=280;d<288;++d)m[d]=8;var b=new n(32);for(d=0;d<32;++d)b[d]=5;var w=y(m,9,0),x=y(m,9,1),z=y(b,5,0),k=y(b,5,1),M=function(t){for(var n=t[0],r=1;r<t.length;++r)t[r]>n&&(n=t[r]);return n},S=function(t,n,r){var e=n/8|0;return(t[e]|t[e+1]<<8)>>(7&n)&r},A=function(t,n){var r=n/8|0;return(t[r]|t[r+1]<<8|t[r+2]<<16)>>(7&n)},T=function(t){return(t+7)/8|0},D=function(t,r,e){return(null==r||r<0)&&(r=0),(null==e||e>t.length)&&(e=t.length),new n(t.subarray(r,e))};_e.FlateErrorCode={UnexpectedEOF:0,InvalidBlockType:1,InvalidLengthLiteral:2,InvalidDistance:3,StreamFinished:4,NoStreamHandler:5,InvalidHeader:6,NoCallback:7,InvalidUTF8:8,ExtraFieldTooLong:9,InvalidDate:10,FilenameTooLong:11,StreamFinishing:12,InvalidZipData:13,UnknownCompressionMethod:14};var C=["unexpected EOF","invalid block type","invalid length/literal","invalid distance","stream finished","no stream handler",,"no callback","invalid UTF-8 data","extra field too long","date not in range 1980-2099","filename too long","stream finishing","invalid zip data"],I=function(t,n,r){var e=Error(n||C[t]);if(e.code=t,Error.captureStackTrace&&Error.captureStackTrace(e,I),!r)throw e;return e},U=function(t,r,e,a){var u=t.length,f=a?a.length:0;if(!u||r.f&&!r.l)return e||new n(0);var l=!e,p=l||2!=r.i,v=r.i;l&&(e=new n(3*u));var d=function(t){var r=e.length;if(t>r){var i=new n(Math.max(2*r,t));i.set(e),e=i}},g=r.f||0,m=r.p||0,b=r.b||0,w=r.l,z=r.d,C=r.m,U=r.n,F=8*u;do{if(!w){g=S(t,m,1);var E=S(t,m+1,3);if(m+=3,!E){var Z=t[(J=T(m)+4)-4]|t[J-3]<<8,q=J+Z;if(q>u){v&&I(0);break}p&&d(b+Z),e.set(t.subarray(J,q),b),r.b=b+=Z,r.p=m=8*q,r.f=g;continue}if(1==E)w=x,z=k,C=9,U=5;else if(2==E){var O=S(t,m,31)+257,G=S(t,m+10,15)+4,L=O+S(t,m+5,31)+1;m+=14;for(var H=new n(L),j=new n(19),N=0;N<G;++N)j[s[N]]=S(t,m+3*N,7);m+=3*G;var P=M(j),B=(1<<P)-1,Y=y(j,P,1);for(N=0;N<L;){var J,K=Y[S(t,m,B)];if(m+=15&K,(J=K>>4)<16)H[N++]=J;else{var Q=0,R=0;for(16==J?(R=3+S(t,m,3),m+=2,Q=H[N-1]):17==J?(R=3+S(t,m,7),m+=3):18==J&&(R=11+S(t,m,127),m+=7);R--;)H[N++]=Q}}var V=H.subarray(0,O),W=H.subarray(O);C=M(V),U=M(W),w=y(V,C,1),z=y(W,U,1)}else I(1);if(m>F){v&&I(0);break}}p&&d(b+131072);for(var X=(1<<C)-1,$=(1<<U)-1,_=m;;_=m){var tt=(Q=w[A(t,m)&X])>>4;if((m+=15&Q)>F){v&&I(0);break}if(Q||I(2),tt<256)e[b++]=tt;else{if(256==tt){_=m,w=null;break}var nt=tt-254;tt>264&&(nt=S(t,m,(1<<(it=i[N=tt-257]))-1)+h[N],m+=it);var rt=z[A(t,m)&$],et=rt>>4;if(rt||I(3),m+=15&rt,W=c[et],et>3){var it=o[et];W+=A(t,m)&(1<<it)-1,m+=it}if(m>F){v&&I(0);break}p&&d(b+131072);var ot=b+nt;if(b<W){var st=f-W,at=Math.min(W,ot);for(st+b<0&&I(3);b<at;++b)e[b]=a[st+b]}for(;b<ot;++b)e[b]=e[b-W]}}r.l=w,r.p=_,r.b=b,r.f=g,w&&(g=1,r.m=C,r.d=z,r.n=U)}while(!g);return b!=e.length&&l?D(e,0,b):e.subarray(0,b)},F=function(t,n,r){var e=n/8|0;t[e]|=r<<=7&n,t[e+1]|=r>>8},E=function(t,n,r){var e=n/8|0;t[e]|=r<<=7&n,t[e+1]|=r>>8,t[e+2]|=r>>16},Z=function(t,e){for(var i=[],o=0;o<t.length;++o)t[o]&&i.push({s:o,f:t[o]});var s=i.length,a=i.slice();if(!s)return{t:N,l:0};if(1==s){var u=new n(i[0].s+1);return u[i[0].s]=1,{t:u,l:1}}i.sort((function(t,n){return t.f-n.f})),i.push({s:-1,f:25001});var h=i[0],f=i[1],l=0,c=1,p=2;for(i[0]={s:-1,f:h.f+f.f,l:h,r:f};c!=s-1;)h=i[i[l].f<i[p].f?l++:p++],f=i[l!=c&&i[l].f<i[p].f?l++:p++],i[c++]={s:-1,f:h.f+f.f,l:h,r:f};var v=a[0].s;for(o=1;o<s;++o)a[o].s>v&&(v=a[o].s);var d=new r(v+1),g=q(i[c-1],d,0);if(g>e){o=0;var y=0,m=g-e,b=1<<m;for(a.sort((function(t,n){return d[n.s]-d[t.s]||t.f-n.f}));o<s;++o){var w=a[o].s;if(!(d[w]>e))break;y+=b-(1<<g-d[w]),d[w]=e}for(y>>=m;y>0;){var x=a[o].s;d[x]<e?y-=1<<e-d[x]++-1:++o}for(;o>=0&&y;--o){var z=a[o].s;d[z]==e&&(--d[z],++y)}g=e}return{t:new n(d),l:g}},q=function(t,n,r){return-1==t.s?Math.max(q(t.l,n,r+1),q(t.r,n,r+1)):n[t.s]=r},O=function(t){for(var n=t.length;n&&!t[--n];);for(var e=new r(++n),i=0,o=t[0],s=1,a=function(t){e[i++]=t},u=1;u<=n;++u)if(t[u]==o&&u!=n)++s;else{if(!o&&s>2){for(;s>138;s-=138)a(32754);s>2&&(a(s>10?s-11<<5|28690:s-3<<5|12305),s=0)}else if(s>3){for(a(o),--s;s>6;s-=6)a(8304);s>2&&(a(s-3<<5|8208),s=0)}for(;s--;)a(o);s=1,o=t[u]}return{c:e.subarray(0,i),n:n}},G=function(t,n){for(var r=0,e=0;e<n.length;++e)r+=t[e]*n[e];return r},L=function(t,n,r){var e=r.length,i=T(n+2);t[i]=255&e,t[i+1]=e>>8,t[i+2]=255^t[i],t[i+3]=255^t[i+1];for(var o=0;o<e;++o)t[i+o+4]=r[o];return 8*(i+4+e)},H=function(t,n,e,a,u,h,f,l,c,p,v){F(n,v++,e),++u[256];for(var d=Z(u,15),g=d.t,x=d.l,k=Z(h,15),M=k.t,S=k.l,A=O(g),T=A.c,D=A.n,C=O(M),I=C.c,U=C.n,q=new r(19),H=0;H<T.length;++H)++q[31&T[H]];for(H=0;H<I.length;++H)++q[31&I[H]];for(var j=Z(q,7),N=j.t,P=j.l,B=19;B>4&&!N[s[B-1]];--B);var Y,J,K,Q,R=p+5<<3,V=G(u,m)+G(h,b)+f,W=G(u,g)+G(h,M)+f+14+3*B+G(q,N)+2*q[16]+3*q[17]+7*q[18];if(c>=0&&R<=V&&R<=W)return L(n,v,t.subarray(c,c+p));if(F(n,v,1+(W<V)),v+=2,W<V){Y=y(g,x,0),J=g,K=y(M,S,0),Q=M;var X=y(N,P,0);for(F(n,v,D-257),F(n,v+5,U-1),F(n,v+10,B-4),v+=14,H=0;H<B;++H)F(n,v+3*H,N[s[H]]);v+=3*B;for(var $=[T,I],_=0;_<2;++_){var tt=$[_];for(H=0;H<tt.length;++H)F(n,v,X[rt=31&tt[H]]),v+=N[rt],rt>15&&(F(n,v,tt[H]>>5&127),v+=tt[H]>>12)}}else Y=w,J=m,K=z,Q=b;for(H=0;H<l;++H){var nt=a[H];if(nt>255){var rt;E(n,v,Y[257+(rt=nt>>18&31)]),v+=J[rt+257],rt>7&&(F(n,v,nt>>23&31),v+=i[rt]);var et=31&nt;E(n,v,K[et]),v+=Q[et],et>3&&(E(n,v,nt>>5&8191),v+=o[et])}else E(n,v,Y[nt]),v+=J[nt]}return E(n,v,Y[256]),v+J[256]},j=new e([65540,131080,131088,131104,262176,1048704,1048832,2114560,2117632]),N=new n(0),P=function(t,s,a,u,h,l){var c=l.z||t.length,v=new n(u+c+5*(1+Math.ceil(c/7e3))+h),d=v.subarray(u,v.length-h),g=l.l,y=7&(l.r||0);if(s){y&&(d[0]=l.r>>3);for(var m=j[s-1],b=m>>13,w=8191&m,x=(1<<a)-1,z=l.p||new r(32768),k=l.h||new r(x+1),M=Math.ceil(a/3),S=2*M,A=function(n){return(t[n]^t[n+1]<<M^t[n+2]<<S)&x},C=new e(25e3),I=new r(288),U=new r(32),F=0,E=0,Z=l.i||0,q=0,O=l.w||0,G=0;Z+2<c;++Z){var N=A(Z),P=32767&Z,B=k[N];if(z[P]=B,k[N]=P,O<=Z){var Y=c-Z;if((F>7e3||q>24576)&&(Y>423||!g)){y=H(t,d,0,C,I,U,E,q,G,Z-G,y),q=F=E=0,G=Z;for(var J=0;J<286;++J)I[J]=0;for(J=0;J<30;++J)U[J]=0}var K=2,Q=0,R=w,V=P-B&32767;if(Y>2&&N==A(Z-V))for(var W=Math.min(b,Y)-1,X=Math.min(32767,Z),$=Math.min(258,Y);V<=X&&--R&&P!=B;){if(t[Z+K]==t[Z+K-V]){for(var _=0;_<$&&t[Z+_]==t[Z+_-V];++_);if(_>K){if(K=_,Q=V,_>W)break;var tt=Math.min(V,_-2),nt=0;for(J=0;J<tt;++J){var rt=Z-V+J&32767,et=rt-z[rt]&32767;et>nt&&(nt=et,B=rt)}}}V+=(P=B)-(B=z[P])&32767}if(Q){C[q++]=268435456|f[K]<<18|p[Q];var it=31&f[K],ot=31&p[Q];E+=i[it]+o[ot],++I[257+it],++U[ot],O=Z+K,++F}else C[q++]=t[Z],++I[t[Z]]}}for(Z=Math.max(Z,O);Z<c;++Z)C[q++]=t[Z],++I[t[Z]];y=H(t,d,g,C,I,U,E,q,G,Z-G,y),g||(l.r=7&y|d[y/8|0]<<3,y-=7,l.h=k,l.p=z,l.i=Z,l.w=O)}else{for(Z=l.w||0;Z<c+g;Z+=65535){var st=Z+65535;st>=c&&(d[y/8|0]=g,st=c),y=L(d,y+1,t.subarray(Z,st))}l.i=c}return D(v,0,u+T(y)+h)},B=function(){for(var t=new Int32Array(256),n=0;n<256;++n){for(var r=n,e=9;--e;)r=(1&r&&-306674912)^r>>>1;t[n]=r}return t}(),Y=function(){var t=-1;return{p:function(n){for(var r=t,e=0;e<n.length;++e)r=B[255&r^n[e]]^r>>>8;t=r},d:function(){return~t}}},J=function(){var t=1,n=0;return{p:function(r){for(var e=t,i=n,o=0|r.length,s=0;s!=o;){for(var a=Math.min(s+2655,o);s<a;++s)i+=e+=r[s];e=(65535&e)+15*(e>>16),i=(65535&i)+15*(i>>16)}t=e,n=i},d:function(){return(255&(t%=65521))<<24|(65280&t)<<8|(255&(n%=65521))<<8|n>>8}}},K=function(t,r,e,i,o){if(!o&&(o={l:1},r.dictionary)){var s=r.dictionary.subarray(-32768),a=new n(s.length+t.length);a.set(s),a.set(t,s.length),t=a,o.w=s.length}return P(t,null==r.level?6:r.level,null==r.mem?o.l?Math.ceil(1.5*Math.max(8,Math.min(13,Math.log(t.length)))):20:12+r.mem,e,i,o)},Q=function(t,n){var r={};for(var e in t)r[e]=t[e];for(var e in n)r[e]=n[e];return r},R=function(t,n,r){for(var e=t(),i=""+t,o=i.slice(i.indexOf("[")+1,i.lastIndexOf("]")).replace(/\s+/g,"").split(","),s=0;s<e.length;++s){var a=e[s],u=o[s];if("function"==typeof a){n+=";"+u+"=";var h=""+a;if(a.prototype)if(-1!=h.indexOf("[native code]")){var f=h.indexOf(" ",8)+1;n+=h.slice(f,h.indexOf("(",f))}else for(var l in n+=h,a.prototype)n+=";"+u+".prototype."+l+"="+a.prototype[l];else n+=h}else r[u]=a}return n},V=[],W=function(t){var n=[];for(var r in t)t[r].buffer&&n.push((t[r]=new t[r].constructor(t[r])).buffer);return n},X=function(n,r,e,i){if(!V[e]){for(var o="",s={},a=n.length-1,u=0;u<a;++u)o=R(n[u],o,s);V[e]={c:R(n[a],o,s),e:s}}var h=Q({},V[e].e);return(0,t.default)(V[e].c+";onmessage=function(e){for(var k in e.data)self[k]=e.data[k];onmessage="+r+"}",e,h,W(h),i)},$=function(){return[n,r,e,i,o,s,h,c,x,k,v,C,y,M,S,A,T,D,I,U,Tt,it,ot]},_=function(){return[n,r,e,i,o,s,f,p,w,m,z,b,v,j,N,y,F,E,Z,q,O,G,L,H,T,D,P,K,kt,it]},tt=function(){return[pt,gt,ct,Y,B]},nt=function(){return[vt,dt]},rt=function(){return[yt,ct,J]},et=function(){return[mt]},it=function(t){return postMessage(t,[t.buffer])},ot=function(t){return t&&{out:t.size&&new n(t.size),dictionary:t.dictionary}},st=function(t,n,r,e,i,o){var s=X(r,e,i,(function(t,n){s.terminate(),o(t,n)}));return s.postMessage([t,n],n.consume?[t.buffer]:[]),function(){s.terminate()}},at=function(t){return t.ondata=function(t,n){return postMessage([t,n],[t.buffer])},function(n){n.data.length?(t.push(n.data[0],n.data[1]),postMessage([n.data[0].length])):t.flush()}},ut=function(t,n,r,e,i,o,s){var a,u=X(t,e,i,(function(t,r){t?(u.terminate(),n.ondata.call(n,t)):Array.isArray(r)?1==r.length?(n.queuedSize-=r[0],n.ondrain&&n.ondrain(r[0])):(r[1]&&u.terminate(),n.ondata.call(n,t,r[0],r[1])):s(r)}));u.postMessage(r),n.queuedSize=0,n.push=function(t,r){n.ondata||I(5),a&&n.ondata(I(4,0,1),null,!!r),n.queuedSize+=t.length,u.postMessage([t,a=r],[t.buffer])},n.terminate=function(){u.terminate()},o&&(n.flush=function(){u.postMessage([])})},ht=function(t,n){return t[n]|t[n+1]<<8},ft=function(t,n){return(t[n]|t[n+1]<<8|t[n+2]<<16|t[n+3]<<24)>>>0},lt=function(t,n){return ft(t,n)+4294967296*ft(t,n+4)},ct=function(t,n,r){for(;r;++n)t[n]=r,r>>>=8},pt=function(t,n){var r=n.filename;if(t[0]=31,t[1]=139,t[2]=8,t[8]=n.level<2?4:9==n.level?2:0,t[9]=3,0!=n.mtime&&ct(t,4,Math.floor(new Date(n.mtime||Date.now())/1e3)),r){t[3]=8;for(var e=0;e<=r.length;++e)t[e+10]=r.charCodeAt(e)}},vt=function(t){31==t[0]&&139==t[1]&&8==t[2]||I(6,"invalid gzip data");var n=t[3],r=10;4&n&&(r+=2+(t[10]|t[11]<<8));for(var e=(n>>3&1)+(n>>4&1);e>0;e-=!t[r++]);return r+(2&n)},dt=function(t){var n=t.length;return(t[n-4]|t[n-3]<<8|t[n-2]<<16|t[n-1]<<24)>>>0},gt=function(t){return 10+(t.filename?t.filename.length+1:0)},yt=function(t,n){var r=n.level,e=0==r?0:r<6?1:9==r?3:2;if(t[0]=120,t[1]=e<<6|(n.dictionary&&32),t[1]|=31-(t[0]<<8|t[1])%31,n.dictionary){var i=J();i.p(n.dictionary),ct(t,2,i.d())}},mt=function(t,n){return(8!=(15&t[0])||t[0]>>4>7||(t[0]<<8|t[1])%31)&&I(6,"invalid zlib data"),(t[1]>>5&1)==+!n&&I(6,"invalid zlib data: "+(32&t[1]?"need":"unexpected")+" dictionary"),2+(t[1]>>3&4)};function bt(t,n){return"function"==typeof t&&(n=t,t={}),this.ondata=n,t}var wt=function(){function t(t,r){if("function"==typeof t&&(r=t,t={}),this.ondata=r,this.o=t||{},this.s={l:0,i:32768,w:32768,z:32768},this.b=new n(98304),this.o.dictionary){var e=this.o.dictionary.subarray(-32768);this.b.set(e,32768-e.length),this.s.i=32768-e.length}}return t.prototype.p=function(t,n){this.ondata(K(t,this.o,0,0,this.s),n)},t.prototype.push=function(t,r){this.ondata||I(5),this.s.l&&I(4);var e=t.length+this.s.z;if(e>this.b.length){if(e>2*this.b.length-32768){var i=new n(-32768&e);i.set(this.b.subarray(0,this.s.z)),this.b=i}var o=this.b.length-this.s.z;this.b.set(t.subarray(0,o),this.s.z),this.s.z=this.b.length,this.p(this.b,!1),this.b.set(this.b.subarray(-32768)),this.b.set(t.subarray(o),32768),this.s.z=t.length-o+32768,this.s.i=32766,this.s.w=32768}else this.b.set(t,this.s.z),this.s.z+=t.length;this.s.l=1&r,(this.s.z>this.s.w+8191||r)&&(this.p(this.b,r||!1),this.s.w=this.s.i,this.s.i-=2)},t.prototype.flush=function(){this.ondata||I(5),this.s.l&&I(4),this.p(this.b,!1),this.s.w=this.s.i,this.s.i-=2},t}();_e.Deflate=wt;var xt=function(){return function(t,n){ut([_,function(){return[at,wt]}],this,bt.call(this,t,n),(function(t){var n=new wt(t.data);onmessage=at(n)}),6,1)}}();function zt(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[_],(function(t){return it(kt(t.data[0],t.data[1]))}),0,r)}function kt(t,n){return K(t,n||{},0,0)}_e.AsyncDeflate=xt,_e.deflate=zt,_e.deflateSync=kt;var Mt=function(){function t(t,r){"function"==typeof t&&(r=t,t={}),this.ondata=r;var e=t&&t.dictionary&&t.dictionary.subarray(-32768);this.s={i:0,b:e?e.length:0},this.o=new n(32768),this.p=new n(0),e&&this.o.set(e)}return t.prototype.e=function(t){if(this.ondata||I(5),this.d&&I(4),this.p.length){if(t.length){var r=new n(this.p.length+t.length);r.set(this.p),r.set(t,this.p.length),this.p=r}}else this.p=t},t.prototype.c=function(t){this.s.i=+(this.d=t||!1);var n=this.s.b,r=U(this.p,this.s,this.o);this.ondata(D(r,n,this.s.b),this.d),this.o=D(r,this.s.b-32768),this.s.b=this.o.length,this.p=D(this.p,this.s.p/8|0),this.s.p&=7},t.prototype.push=function(t,n){this.e(t),this.c(n)},t}();_e.Inflate=Mt;var St=function(){return function(t,n){ut([$,function(){return[at,Mt]}],this,bt.call(this,t,n),(function(t){var n=new Mt(t.data);onmessage=at(n)}),7,0)}}();function At(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[$],(function(t){return it(Tt(t.data[0],ot(t.data[1])))}),1,r)}function Tt(t,n){return U(t,{i:2},n&&n.out,n&&n.dictionary)}_e.AsyncInflate=St,_e.inflate=At,_e.inflateSync=Tt;var Dt=function(){function t(t,n){this.c=Y(),this.l=0,this.v=1,wt.call(this,t,n)}return t.prototype.push=function(t,n){this.c.p(t),this.l+=t.length,wt.prototype.push.call(this,t,n)},t.prototype.p=function(t,n){var r=K(t,this.o,this.v&&gt(this.o),n&&8,this.s);this.v&&(pt(r,this.o),this.v=0),n&&(ct(r,r.length-8,this.c.d()),ct(r,r.length-4,this.l)),this.ondata(r,n)},t.prototype.flush=function(){wt.prototype.flush.call(this)},t}();_e.Gzip=Dt,_e.Compress=Dt;var Ct=function(){return function(t,n){ut([_,tt,function(){return[at,wt,Dt]}],this,bt.call(this,t,n),(function(t){var n=new Dt(t.data);onmessage=at(n)}),8,1)}}();function It(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[_,tt,function(){return[Ut]}],(function(t){return it(Ut(t.data[0],t.data[1]))}),2,r)}function Ut(t,n){n||(n={});var r=Y(),e=t.length;r.p(t);var i=K(t,n,gt(n),8),o=i.length;return pt(i,n),ct(i,o-8,r.d()),ct(i,o-4,e),i}_e.AsyncGzip=Ct,_e.AsyncCompress=Ct,_e.gzip=It,_e.compress=It,_e.gzipSync=Ut,_e.compressSync=Ut;var Ft=function(){function t(t,n){this.v=1,this.r=0,Mt.call(this,t,n)}return t.prototype.push=function(t,r){if(Mt.prototype.e.call(this,t),this.r+=t.length,this.v){var e=this.p.subarray(this.v-1),i=e.length>3?vt(e):4;if(i>e.length){if(!r)return}else this.v>1&&this.onmember&&this.onmember(this.r-e.length);this.p=e.subarray(i),this.v=0}Mt.prototype.c.call(this,r),!this.s.f||this.s.l||r||(this.v=T(this.s.p)+9,this.s={i:0},this.o=new n(0),this.push(new n(0),r))},t}();_e.Gunzip=Ft;var Et=function(){return function(t,n){var r=this;ut([$,nt,function(){return[at,Mt,Ft]}],this,bt.call(this,t,n),(function(t){var n=new Ft(t.data);n.onmember=function(t){return postMessage(t)},onmessage=at(n)}),9,0,(function(t){return r.onmember&&r.onmember(t)}))}}();function Zt(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[$,nt,function(){return[qt]}],(function(t){return it(qt(t.data[0],t.data[1]))}),3,r)}function qt(t,r){var e=vt(t);return e+8>t.length&&I(6,"invalid gzip data"),U(t.subarray(e,-8),{i:2},r&&r.out||new n(dt(t)),r&&r.dictionary)}_e.AsyncGunzip=Et,_e.gunzip=Zt,_e.gunzipSync=qt;var Ot=function(){function t(t,n){this.c=J(),this.v=1,wt.call(this,t,n)}return t.prototype.push=function(t,n){this.c.p(t),wt.prototype.push.call(this,t,n)},t.prototype.p=function(t,n){var r=K(t,this.o,this.v&&(this.o.dictionary?6:2),n&&4,this.s);this.v&&(yt(r,this.o),this.v=0),n&&ct(r,r.length-4,this.c.d()),this.ondata(r,n)},t.prototype.flush=function(){wt.prototype.flush.call(this)},t}();_e.Zlib=Ot;var Gt=function(){return function(t,n){ut([_,rt,function(){return[at,wt,Ot]}],this,bt.call(this,t,n),(function(t){var n=new Ot(t.data);onmessage=at(n)}),10,1)}}();function Lt(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[_,rt,function(){return[Ht]}],(function(t){return it(Ht(t.data[0],t.data[1]))}),4,r)}function Ht(t,n){n||(n={});var r=J();r.p(t);var e=K(t,n,n.dictionary?6:2,4);return yt(e,n),ct(e,e.length-4,r.d()),e}_e.AsyncZlib=Gt,_e.zlib=Lt,_e.zlibSync=Ht;var jt=function(){function t(t,n){Mt.call(this,t,n),this.v=t&&t.dictionary?2:1}return t.prototype.push=function(t,n){if(Mt.prototype.e.call(this,t),this.v){if(this.p.length<6&&!n)return;this.p=this.p.subarray(mt(this.p,this.v-1)),this.v=0}n&&(this.p.length<4&&I(6,"invalid zlib data"),this.p=this.p.subarray(0,-4)),Mt.prototype.c.call(this,n)},t}();_e.Unzlib=jt;var Nt=function(){return function(t,n){ut([$,et,function(){return[at,Mt,jt]}],this,bt.call(this,t,n),(function(t){var n=new jt(t.data);onmessage=at(n)}),11,0)}}();function Pt(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),st(t,n,[$,et,function(){return[Bt]}],(function(t){return it(Bt(t.data[0],ot(t.data[1])))}),5,r)}function Bt(t,n){return U(t.subarray(mt(t,n&&n.dictionary),-4),{i:2},n&&n.out,n&&n.dictionary)}_e.AsyncUnzlib=Nt,_e.unzlib=Pt,_e.unzlibSync=Bt;var Yt=function(){function t(t,n){this.o=bt.call(this,t,n)||{},this.G=Ft,this.I=Mt,this.Z=jt}return t.prototype.i=function(){var t=this;this.s.ondata=function(n,r){t.ondata(n,r)}},t.prototype.push=function(t,r){if(this.ondata||I(5),this.s)this.s.push(t,r);else{if(this.p&&this.p.length){var e=new n(this.p.length+t.length);e.set(this.p),e.set(t,this.p.length)}else this.p=t;this.p.length>2&&(this.s=31==this.p[0]&&139==this.p[1]&&8==this.p[2]?new this.G(this.o):8!=(15&this.p[0])||this.p[0]>>4>7||(this.p[0]<<8|this.p[1])%31?new this.I(this.o):new this.Z(this.o),this.i(),this.s.push(this.p,r),this.p=null)}},t}();_e.Decompress=Yt;var Jt=function(){function t(t,n){Yt.call(this,t,n),this.queuedSize=0,this.G=Et,this.I=St,this.Z=Nt}return t.prototype.i=function(){var t=this;this.s.ondata=function(n,r,e){t.ondata(n,r,e)},this.s.ondrain=function(n){t.queuedSize-=n,t.ondrain&&t.ondrain(n)}},t.prototype.push=function(t,n){this.queuedSize+=t.length,Yt.prototype.push.call(this,t,n)},t}();function Kt(t,n,r){return r||(r=n,n={}),"function"!=typeof r&&I(7),31==t[0]&&139==t[1]&&8==t[2]?Zt(t,n,r):8!=(15&t[0])||t[0]>>4>7||(t[0]<<8|t[1])%31?At(t,n,r):Pt(t,n,r)}function Qt(t,n){return 31==t[0]&&139==t[1]&&8==t[2]?qt(t,n):8!=(15&t[0])||t[0]>>4>7||(t[0]<<8|t[1])%31?Tt(t,n):Bt(t,n)}_e.AsyncDecompress=Jt,_e.decompress=Kt,_e.decompressSync=Qt;var Rt=function(t,r,e,i){for(var o in t){var s=t[o],a=r+o,u=i;Array.isArray(s)&&(u=Q(i,s[1]),s=s[0]),s instanceof n?e[a]=[s,u]:(e[a+="/"]=[new n(0),u],Rt(s,a,e,i))}},Vt="undefined"!=typeof TextEncoder&&new TextEncoder,Wt="undefined"!=typeof TextDecoder&&new TextDecoder,Xt=0;try{Wt.decode(N,{stream:!0}),Xt=1}catch(t){}var $t=function(t){for(var n="",r=0;;){var e=t[r++],i=(e>127)+(e>223)+(e>239);if(r+i>t.length)return{s:n,r:D(t,r-1)};i?3==i?(e=((15&e)<<18|(63&t[r++])<<12|(63&t[r++])<<6|63&t[r++])-65536,n+=String.fromCharCode(55296|e>>10,56320|1023&e)):n+=String.fromCharCode(1&i?(31&e)<<6|63&t[r++]:(15&e)<<12|(63&t[r++])<<6|63&t[r++]):n+=String.fromCharCode(e)}},_t=function(){function t(t){this.ondata=t,Xt?this.t=new TextDecoder:this.p=N}return t.prototype.push=function(t,r){if(this.ondata||I(5),r=!!r,this.t)return this.ondata(this.t.decode(t,{stream:!0}),r),void(r&&(this.t.decode().length&&I(8),this.t=null));this.p||I(4);var e=new n(this.p.length+t.length);e.set(this.p),e.set(t,this.p.length);var i=$t(e),o=i.s,s=i.r;r?(s.length&&I(8),this.p=null):this.p=s,this.ondata(o,r)},t}();_e.DecodeUTF8=_t;var tn=function(){function t(t){this.ondata=t}return t.prototype.push=function(t,n){this.ondata||I(5),this.d&&I(4),this.ondata(nn(t),this.d=n||!1)},t}();function nn(t,r){if(r){for(var e=new n(t.length),i=0;i<t.length;++i)e[i]=t.charCodeAt(i);return e}if(Vt)return Vt.encode(t);var o=t.length,s=new n(t.length+(t.length>>1)),a=0,u=function(t){s[a++]=t};for(i=0;i<o;++i){if(a+5>s.length){var h=new n(a+8+(o-i<<1));h.set(s),s=h}var f=t.charCodeAt(i);f<128||r?u(f):f<2048?(u(192|f>>6),u(128|63&f)):f>55295&&f<57344?(u(240|(f=65536+(1047552&f)|1023&t.charCodeAt(++i))>>18),u(128|f>>12&63),u(128|f>>6&63),u(128|63&f)):(u(224|f>>12),u(128|f>>6&63),u(128|63&f))}return D(s,0,a)}function rn(t,n){if(n){for(var r="",e=0;e<t.length;e+=16384)r+=String.fromCharCode.apply(null,t.subarray(e,e+16384));return r}if(Wt)return Wt.decode(t);var i=$t(t),o=i.s;return(r=i.r).length&&I(8),o}_e.EncodeUTF8=tn,_e.strToU8=nn,_e.strFromU8=rn;var en=function(t){return 1==t?3:t<6?2:9==t?1:0},on=function(t,n){return n+30+ht(t,n+26)+ht(t,n+28)},sn=function(t,n,r){var e=ht(t,n+28),i=rn(t.subarray(n+46,n+46+e),!(2048&ht(t,n+8))),o=n+46+e,s=ft(t,n+20),a=r&&4294967295==s?an(t,o):[s,ft(t,n+24),ft(t,n+42)],u=a[0],h=a[1],f=a[2];return[ht(t,n+10),u,h,i,o+ht(t,n+30)+ht(t,n+32),f]},an=function(t,n){for(;1!=ht(t,n);n+=4+ht(t,n+2));return[lt(t,n+12),lt(t,n+4),lt(t,n+20)]},un=function(t){var n=0;if(t)for(var r in t){var e=t[r].length;e>65535&&I(9),n+=e+4}return n},hn=function(t,n,r,e,i,o,s,a){var u=e.length,h=r.extra,f=a&&a.length,l=un(h);ct(t,n,null!=s?33639248:67324752),n+=4,null!=s&&(t[n++]=20,t[n++]=r.os),t[n]=20,n+=2,t[n++]=r.flag<<1|(o<0&&8),t[n++]=i&&8,t[n++]=255&r.compression,t[n++]=r.compression>>8;var c=new Date(null==r.mtime?Date.now():r.mtime),p=c.getFullYear()-1980;if((p<0||p>119)&&I(10),ct(t,n,p<<25|c.getMonth()+1<<21|c.getDate()<<16|c.getHours()<<11|c.getMinutes()<<5|c.getSeconds()>>1),n+=4,-1!=o&&(ct(t,n,r.crc),ct(t,n+4,o<0?-o-2:o),ct(t,n+8,r.size)),ct(t,n+12,u),ct(t,n+14,l),n+=16,null!=s&&(ct(t,n,f),ct(t,n+6,r.attrs),ct(t,n+10,s),n+=14),t.set(e,n),n+=u,l)for(var v in h){var d=h[v],g=d.length;ct(t,n,+v),ct(t,n+2,g),t.set(d,n+4),n+=4+g}return f&&(t.set(a,n),n+=f),n},fn=function(t,n,r,e,i){ct(t,n,101010256),ct(t,n+8,r),ct(t,n+10,r),ct(t,n+12,e),ct(t,n+16,i)},ln=function(){function t(t){this.filename=t,this.c=Y(),this.size=0,this.compression=0}return t.prototype.process=function(t,n){this.ondata(null,t,n)},t.prototype.push=function(t,n){this.ondata||I(5),this.c.p(t),this.size+=t.length,n&&(this.crc=this.c.d()),this.process(t,n||!1)},t}();_e.ZipPassThrough=ln;var cn=function(){function t(t,n){var r=this;n||(n={}),ln.call(this,t),this.d=new wt(n,(function(t,n){r.ondata(null,t,n)})),this.compression=8,this.flag=en(n.level)}return t.prototype.process=function(t,n){try{this.d.push(t,n)}catch(t){this.ondata(t,null,n)}},t.prototype.push=function(t,n){ln.prototype.push.call(this,t,n)},t}();_e.ZipDeflate=cn;var pn=function(){function t(t,n){var r=this;n||(n={}),ln.call(this,t),this.d=new xt(n,(function(t,n,e){r.ondata(t,n,e)})),this.compression=8,this.flag=en(n.level),this.terminate=this.d.terminate}return t.prototype.process=function(t,n){this.d.push(t,n)},t.prototype.push=function(t,n){ln.prototype.push.call(this,t,n)},t}();_e.AsyncZipDeflate=pn;var vn=function(){function t(t){this.ondata=t,this.u=[],this.d=1}return t.prototype.add=function(t){var r=this;if(this.ondata||I(5),2&this.d)this.ondata(I(4+8*(1&this.d),0,1),null,!1);else{var e=nn(t.filename),i=e.length,o=t.comment,s=o&&nn(o),a=i!=t.filename.length||s&&o.length!=s.length,u=i+un(t.extra)+30;i>65535&&this.ondata(I(11,0,1),null,!1);var h=new n(u);hn(h,0,t,e,a,-1);var f=[h],l=function(){for(var t=0,n=f;t<n.length;t++)r.ondata(null,n[t],!1);f=[]},c=this.d;this.d=0;var p=this.u.length,v=Q(t,{f:e,u:a,o:s,t:function(){t.terminate&&t.terminate()},r:function(){if(l(),c){var t=r.u[p+1];t?t.r():r.d=1}c=1}}),d=0;t.ondata=function(e,i,o){if(e)r.ondata(e,i,o),r.terminate();else if(d+=i.length,f.push(i),o){var s=new n(16);ct(s,0,134695760),ct(s,4,t.crc),ct(s,8,d),ct(s,12,t.size),f.push(s),v.c=d,v.b=u+d+16,v.crc=t.crc,v.size=t.size,c&&v.r(),c=1}else c&&l()},this.u.push(v)}},t.prototype.end=function(){var t=this;2&this.d?this.ondata(I(4+8*(1&this.d),0,1),null,!0):(this.d?this.e():this.u.push({r:function(){1&t.d&&(t.u.splice(-1,1),t.e())},t:function(){}}),this.d=3)},t.prototype.e=function(){for(var t=0,r=0,e=0,i=0,o=this.u;i<o.length;i++)e+=46+(h=o[i]).f.length+un(h.extra)+(h.o?h.o.length:0);for(var s=new n(e+22),a=0,u=this.u;a<u.length;a++){var h;hn(s,t,h=u[a],h.f,h.u,-h.c-2,r,h.o),t+=46+h.f.length+un(h.extra)+(h.o?h.o.length:0),r+=h.b}fn(s,t,this.u.length,e,r),this.ondata(null,s,!0),this.d=2},t.prototype.terminate=function(){for(var t=0,n=this.u;t<n.length;t++)n[t].t();this.d=2},t}();function dn(t,r,e){e||(e=r,r={}),"function"!=typeof e&&I(7);var i={};Rt(t,"",i,r);var o=Object.keys(i),s=o.length,a=0,u=0,h=s,f=Array(s),l=[],c=function(){for(var t=0;t<l.length;++t)l[t]()},p=function(t,n){xn((function(){e(t,n)}))};xn((function(){p=e}));var v=function(){var t=new n(u+22),r=a,e=u-a;u=0;for(var i=0;i<h;++i){var o=f[i];try{var s=o.c.length;hn(t,u,o,o.f,o.u,s);var l=30+o.f.length+un(o.extra),c=u+l;t.set(o.c,c),hn(t,a,o,o.f,o.u,s,u,o.m),a+=16+l+(o.m?o.m.length:0),u=c+s}catch(t){return p(t,null)}}fn(t,a,f.length,e,r),p(null,t)};s||v();for(var d=function(t){var n=o[t],r=i[n],e=r[0],h=r[1],d=Y(),g=e.length;d.p(e);var y=nn(n),m=y.length,b=h.comment,w=b&&nn(b),x=w&&w.length,z=un(h.extra),k=0==h.level?0:8,M=function(r,e){if(r)c(),p(r,null);else{var i=e.length;f[t]=Q(h,{size:g,crc:d.d(),c:e,f:y,m:w,u:m!=n.length||w&&b.length!=x,compression:k}),a+=30+m+z+i,u+=76+2*(m+z)+(x||0)+i,--s||v()}};if(m>65535&&M(I(11,0,1),null),k)if(g<16e4)try{M(null,kt(e,h))}catch(t){M(t,null)}else l.push(zt(e,h,M));else M(null,e)},g=0;g<h;++g)d(g);return c}function gn(t,r){r||(r={});var e={},i=[];Rt(t,"",e,r);var o=0,s=0;for(var a in e){var u=e[a],h=u[0],f=u[1],l=0==f.level?0:8,c=(M=nn(a)).length,p=f.comment,v=p&&nn(p),d=v&&v.length,g=un(f.extra);c>65535&&I(11);var y=l?kt(h,f):h,m=y.length,b=Y();b.p(h),i.push(Q(f,{size:h.length,crc:b.d(),c:y,f:M,m:v,u:c!=a.length||v&&p.length!=d,o:o,compression:l})),o+=30+c+g+m,s+=76+2*(c+g)+(d||0)+m}for(var w=new n(s+22),x=o,z=s-o,k=0;k<i.length;++k){var M;hn(w,(M=i[k]).o,M,M.f,M.u,M.c.length);var S=30+M.f.length+un(M.extra);w.set(M.c,M.o+S),hn(w,o,M,M.f,M.u,M.c.length,M.o,M.m),o+=16+S+(M.m?M.m.length:0)}return fn(w,o,i.length,z,x),w}_e.Zip=vn,_e.zip=dn,_e.zipSync=gn;var yn=function(){function t(){}return t.prototype.push=function(t,n){this.ondata(null,t,n)},t.compression=0,t}();_e.UnzipPassThrough=yn;var mn=function(){function t(){var t=this;this.i=new Mt((function(n,r){t.ondata(null,n,r)}))}return t.prototype.push=function(t,n){try{this.i.push(t,n)}catch(t){this.ondata(t,null,n)}},t.compression=8,t}();_e.UnzipInflate=mn;var bn=function(){function t(t,n){var r=this;n<32e4?this.i=new Mt((function(t,n){r.ondata(null,t,n)})):(this.i=new St((function(t,n,e){r.ondata(t,n,e)})),this.terminate=this.i.terminate)}return t.prototype.push=function(t,n){this.i.terminate&&(t=D(t,0)),this.i.push(t,n)},t.compression=8,t}();_e.AsyncUnzipInflate=bn;var wn=function(){function t(t){this.onfile=t,this.k=[],this.o={0:yn},this.p=N}return t.prototype.push=function(t,r){var e=this;if(this.onfile||I(5),this.p||I(4),this.c>0){var i=Math.min(this.c,t.length),o=t.subarray(0,i);if(this.c-=i,this.d?this.d.push(o,!this.c):this.k[0].push(o),(t=t.subarray(i)).length)return this.push(t,r)}else{var s=0,a=0,u=void 0,h=void 0;this.p.length?t.length?((h=new n(this.p.length+t.length)).set(this.p),h.set(t,this.p.length)):h=this.p:h=t;for(var f=h.length,l=this.c,c=l&&this.d,p=function(){var t,n=ft(h,a);if(67324752==n){s=1,u=a,v.d=null,v.c=0;var r=ht(h,a+6),i=ht(h,a+8),o=2048&r,c=8&r,p=ht(h,a+26),d=ht(h,a+28);if(f>a+30+p+d){var g=[];v.k.unshift(g),s=2;var y,m=ft(h,a+18),b=ft(h,a+22),w=rn(h.subarray(a+30,a+=30+p),!o);4294967295==m?(t=c?[-2]:an(h,a),m=t[0],b=t[1]):c&&(m=-1),a+=d,v.c=m;var x={name:w,compression:i,start:function(){if(x.ondata||I(5),m){var t=e.o[i];t||x.ondata(I(14,"unknown compression type "+i,1),null,!1),(y=m<0?new t(w):new t(w,m,b)).ondata=function(t,n,r){x.ondata(t,n,r)};for(var n=0,r=g;n<r.length;n++)y.push(r[n],!1);e.k[0]==g&&e.c?e.d=y:y.push(N,!0)}else x.ondata(null,N,!0)},terminate:function(){y&&y.terminate&&y.terminate()}};m>=0&&(x.size=m,x.originalSize=b),v.onfile(x)}return"break"}if(l){if(134695760==n)return u=a+=12+(-2==l&&8),s=3,v.c=0,"break";if(33639248==n)return u=a-=4,s=3,v.c=0,"break"}},v=this;a<f-4&&"break"!==p();++a);if(this.p=N,l<0){var d=h.subarray(0,s?u-12-(-2==l&&8)-(134695760==ft(h,u-16)&&4):a);c?c.push(d,!!s):this.k[+(2==s)].push(d)}if(2&s)return this.push(h.subarray(a),r);this.p=h.subarray(a)}r&&(this.c&&I(13),this.p=null)},t.prototype.register=function(t){this.o[t.compression]=t},t}();_e.Unzip=wn;var xn="function"==typeof queueMicrotask?queueMicrotask:"function"==typeof setTimeout?setTimeout:function(t){t()};function zn(t,r,e){e||(e=r,r={}),"function"!=typeof e&&I(7);var i=[],o=function(){for(var t=0;t<i.length;++t)i[t]()},s={},a=function(t,n){xn((function(){e(t,n)}))};xn((function(){a=e}));for(var u=t.length-22;101010256!=ft(t,u);--u)if(!u||t.length-u>65558)return a(I(13,0,1),null),o;var h=ht(t,u+8);if(h){var f=h,l=ft(t,u+16),c=4294967295==l||65535==f;if(c){var p=ft(t,u-12);(c=101075792==ft(t,p))&&(f=h=ft(t,p+32),l=ft(t,p+48))}for(var v=r&&r.filter,d=function(r){var e=sn(t,l,c),u=e[0],f=e[1],p=e[2],d=e[3],g=e[4],y=on(t,e[5]);l=g;var m=function(t,n){t?(o(),a(t,null)):(n&&(s[d]=n),--h||a(null,s))};if(!v||v({name:d,size:f,originalSize:p,compression:u}))if(u)if(8==u){var b=t.subarray(y,y+f);if(p<524288||f>.8*p)try{m(null,Tt(b,{out:new n(p)}))}catch(t){m(t,null)}else i.push(At(b,{size:p},m))}else m(I(14,"unknown compression type "+u,1),null);else m(null,D(t,y,y+f));else m(null,null)},g=0;g<f;++g)d()}else a(null,{});return o}function kn(t,r){for(var e={},i=t.length-22;101010256!=ft(t,i);--i)(!i||t.length-i>65558)&&I(13);var o=ht(t,i+8);if(!o)return{};var s=ft(t,i+16),a=4294967295==s||65535==o;if(a){var u=ft(t,i-12);(a=101075792==ft(t,u))&&(o=ft(t,u+32),s=ft(t,u+48))}for(var h=r&&r.filter,f=0;f<o;++f){var l=sn(t,s,a),c=l[0],p=l[1],v=l[2],d=l[3],g=l[4],y=on(t,l[5]);s=g,h&&!h({name:d,size:p,originalSize:v,compression:c})||(c?8==c?e[d]=Tt(t.subarray(y,y+p),{out:new n(v)}):I(14,"unknown compression type "+c):e[d]=D(t,y,y+p))}return e}_e.unzip=zn,_e.unzipSync=kn;return _e});</script>
+  <script>(function (root) {
+  "use strict";
+
+  var UTF8 = new TextDecoder("utf-8");
+
+  function cleanName(value) {
+    return value == null ? "" : String(value).replace(/[\u00a0\s]+/g, " ").trim();
+  }
+
+  function nameKey(value) {
+    return cleanName(value).toLocaleLowerCase();
+  }
+
+  function parseRate(value, cellLabel) {
+    if (value == null || value === "") return null;
+    var text = String(value).trim();
+    var percent = /%$/.test(text);
+    var number = Number(percent ? text.slice(0, -1) : text);
+    if (!Number.isFinite(number)) {
+      throw new Error(cellLabel + " 的胜率不是有效数字：" + text);
+    }
+    if (percent || number > 1) number /= 100;
+    if (number < 0 || number > 1) {
+      throw new Error(cellLabel + " 的胜率必须在 0% 到 100% 之间。");
+    }
+    return number;
+  }
+
+  function findEndOfCentralDirectory(bytes) {
+    var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    var lowerBound = Math.max(0, bytes.length - 65557);
+    for (var i = bytes.length - 22; i >= lowerBound; i -= 1) {
+      if (view.getUint32(i, true) === 0x06054b50) return i;
+    }
+    throw new Error("这不是有效的 XLSX/ZIP 文件。");
+  }
+
+  function readZipDirectory(bytes) {
+    var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    var eocd = findEndOfCentralDirectory(bytes);
+    var entryCount = view.getUint16(eocd + 10, true);
+    var offset = view.getUint32(eocd + 16, true);
+    var entries = new Map();
+
+    for (var i = 0; i < entryCount; i += 1) {
+      if (view.getUint32(offset, true) !== 0x02014b50) {
+        throw new Error("XLSX 的 ZIP 目录已损坏。");
+      }
+      var flags = view.getUint16(offset + 8, true);
+      var method = view.getUint16(offset + 10, true);
+      var compressedSize = view.getUint32(offset + 20, true);
+      if(view.getUint32(offset+24,true)>25*1024*1024)throw new Error("XLSX 单个数据项超过 25 MB，请缩小文件。");
+      var nameLength = view.getUint16(offset + 28, true);
+      var extraLength = view.getUint16(offset + 30, true);
+      var commentLength = view.getUint16(offset + 32, true);
+      var localOffset = view.getUint32(offset + 42, true);
+      var name = UTF8.decode(bytes.subarray(offset + 46, offset + 46 + nameLength)).replace(/\\/g, "/");
+      if (flags & 1) throw new Error("暂不支持加密的 XLSX 文件。");
+      entries.set(name.replace(/^\//, ""), {
+        method: method,
+        compressedSize: compressedSize,
+        localOffset: localOffset
+      });
+      offset += 46 + nameLength + extraLength + commentLength;
+    }
+    return entries;
+  }
+
+  async function unzipEntry(bytes, entry) {
+    var view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    var offset = entry.localOffset;
+    if (view.getUint32(offset, true) !== 0x04034b50) throw new Error("XLSX 中的 ZIP 项已损坏。");
+    var nameLength = view.getUint16(offset + 26, true);
+    var extraLength = view.getUint16(offset + 28, true);
+    var start = offset + 30 + nameLength + extraLength;
+    var compressed = bytes.subarray(start, start + entry.compressedSize);
+    if(entry.method===8&&root.fflate)return root.fflate.inflateSync(compressed);
+    if(entry.method===8&&root.AndroidBridge){var chunks=[];for(var n=0;n<compressed.length;n+=8192)chunks.push(String.fromCharCode.apply(null,compressed.subarray(n,n+8192)));var result=JSON.parse(root.AndroidBridge.inflateRaw(btoa(chunks.join(''))));if(result.error)throw new Error(result.error);var decoded=atob(result.base64);return Uint8Array.from(decoded,function(c){return c.charCodeAt(0);});}
+    if (entry.method === 0) return compressed;
+    if (entry.method !== 8) throw new Error("XLSX 使用了不支持的 ZIP 压缩方式。");
+    if (typeof DecompressionStream === "undefined") {
+      throw new Error("当前浏览器无法解压 XLSX，请升级到较新的 Chrome、Edge 或 Safari。");
+    }
+    var stream;
+    try {
+      stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+    } catch (error) {
+      throw new Error("当前浏览器不支持 XLSX 所需的 deflate-raw 解压。");
+    }
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+
+  function normalizePath(base, target) {
+    if (target.charAt(0) === "/") return target.slice(1);
+    var parts = (base + "/" + target).split("/");
+    var result = [];
+    parts.forEach(function (part) {
+      if (!part || part === ".") return;
+      if (part === "..") result.pop();
+      else result.push(part);
+    });
+    return result.join("/");
+  }
+
+  function parseXml(text, label) {
+    var documentNode = new DOMParser().parseFromString(text, "application/xml");
+    if (documentNode.getElementsByTagName("parsererror").length) {
+      throw new Error("无法解析 XLSX 中的 " + label + "。");
+    }
+    return documentNode;
+  }
+
+  function columnIndex(reference) {
+    var match = /^([A-Z]+)/i.exec(reference || "");
+    if (!match) return 0;
+    var index = 0;
+    for (var i = 0; i < match[1].length; i += 1) {
+      index = index * 26 + match[1].toUpperCase().charCodeAt(i) - 64;
+    }
+    return index - 1;
+  }
+
+  function rowIndex(reference) {
+    var match = /(\d+)$/.exec(reference || "");
+    return match ? Number(match[1]) - 1 : 0;
+  }
+
+  function columnName(index) {
+    var name = "";
+    for (var value = index + 1; value > 0; value = Math.floor((value - 1) / 26)) {
+      name = String.fromCharCode(65 + ((value - 1) % 26)) + name;
+    }
+    return name;
+  }
+
+  function parseSharedStrings(xml) {
+    if (!xml) return [];
+    return Array.from(xml.getElementsByTagName("si")).map(function (item) {
+      return item.textContent || "";
+    });
+  }
+
+  function parseSheet(xml, sharedStrings) {
+    var rows = [];
+    Array.from(xml.getElementsByTagName("c")).forEach(function (cell) {
+      var reference = cell.getAttribute("r") || "A1";
+      var row = rowIndex(reference);
+      var column = columnIndex(reference);
+      var type = cell.getAttribute("t") || "n";
+      var valueNode = cell.getElementsByTagName("v")[0];
+      var value = valueNode ? valueNode.textContent : null;
+      if (type === "s") value = sharedStrings[Number(value)] == null ? "" : sharedStrings[Number(value)];
+      else if (type === "inlineStr") {
+        var inlineNode = cell.getElementsByTagName("is")[0];
+        value = inlineNode ? inlineNode.textContent : "";
+      } else if (type === "b") value = value === "1";
+      else if ((type === "n" || !type) && value !== null && value !== "") value = Number(value);
+      if (!rows[row]) rows[row] = [];
+      rows[row][column] = value;
+    });
+    return rows;
+  }
+
+  function matrixFromRows(rows) {
+    var header = rows[0] || [];
+    var columnNames = Array.from({ length: Math.max(0, header.length - 1) }, function (_, index) {
+      return cleanName(header[index + 1]);
+    });
+    var rowNames = Array.from({ length: Math.max(0, rows.length - 1) }, function (_, index) {
+      return cleanName((rows[index + 1] || [])[0]);
+    });
+    while (columnNames.length && !columnNames[columnNames.length - 1]) columnNames.pop();
+    while (rowNames.length && !rowNames[rowNames.length - 1]) rowNames.pop();
+    var values = rowNames.map(function (_, row) {
+      return columnNames.map(function (_, column) {
+        return parseRate((rows[row + 1] || [])[column + 1], columnName(column + 1) + (row + 2));
+      });
+    });
+    return { rowNames: rowNames, columnNames: columnNames, values: values, corner: cleanName(header[0]) };
+  }
+
+  function overlap(names, expected) {
+    var keys = new Set(expected.map(nameKey));
+    return names.reduce(function (score, name) { return score + (keys.has(nameKey(name)) ? 1 : 0); }, 0);
+  }
+
+  function indexByName(names) {
+    var map = new Map();
+    names.forEach(function (name, index) {
+      var key = nameKey(name);
+      if (key && !map.has(key)) map.set(key, index);
+    });
+    return map;
+  }
+
+  function assertUniqueLabels(names, axisLabel) {
+    var seen = new Set();
+    names.forEach(function (name) {
+      var key = nameKey(name);
+      if (!key) throw new Error(axisLabel + "中间存在空白名称，请补全或删除该行/列。");
+      if (seen.has(key)) throw new Error(axisLabel + "存在重复名称：" + cleanName(name));
+      seen.add(key);
+    });
+  }
+
+  function labelsFit(names, expected) {
+    var expectedKeys = new Set(expected.map(nameKey));
+    return names.every(function (name) { return expectedKeys.has(nameKey(name)); });
+  }
+
+  function mapOpponentRates(matrix, ourDecks, opponentDecks) {
+    assertUniqueLabels(matrix.rowNames, "第二页行标题");
+    assertUniqueLabels(matrix.columnNames, "第二页列标题");
+    var normalScore = overlap(matrix.rowNames, ourDecks) + overlap(matrix.columnNames, opponentDecks);
+    var transposedScore = overlap(matrix.rowNames, opponentDecks) + overlap(matrix.columnNames, ourDecks);
+    var normalValid = labelsFit(matrix.rowNames, ourDecks) && labelsFit(matrix.columnNames, opponentDecks);
+    var transposedValid = labelsFit(matrix.rowNames, opponentDecks) && labelsFit(matrix.columnNames, ourDecks);
+    if (!normalValid && !transposedValid) {
+      throw new Error("第二页包含未知卡组名称，或行列标题与第一页无法对应。");
+    }
+    var direction = (matrix.corner || "").replace(/\s/g, "");
+    if (normalValid && transposedValid && normalScore === transposedScore && direction !== "对手/我方" && direction !== "我方/对手") {
+      throw new Error("第二页方向不明确，请确保行、列至少包含一个能区分我方与对手的卡组名称。");
+    }
+    var transposed = transposedValid && (!normalValid || transposedScore > normalScore || (normalScore === transposedScore && direction === "对手/我方"));
+    var rowMap = indexByName(matrix.rowNames);
+    var columnMap = indexByName(matrix.columnNames);
+    return ourDecks.map(function (ourName) {
+      return opponentDecks.map(function (opponentName) {
+        var row = rowMap.get(nameKey(transposed ? opponentName : ourName));
+        var column = columnMap.get(nameKey(transposed ? ourName : opponentName));
+        return row == null || column == null ? null : matrix.values[row][column];
+      });
+    });
+  }
+
+  async function importMatchupWorkbook(arrayBuffer) {
+    var input = arrayBuffer instanceof Uint8Array ? arrayBuffer : new Uint8Array(arrayBuffer);
+    var bytes = new Uint8Array(input.byteLength);
+    bytes.set(input);
+    var entries = readZipDirectory(bytes);
+
+    async function readText(path, optional) {
+      var entry = entries.get(path);
+      if (!entry) {
+        if (optional) return null;
+        throw new Error("XLSX 缺少必要文件：" + path);
+      }
+      return UTF8.decode(await unzipEntry(bytes, entry));
+    }
+
+    var workbookXml = parseXml(await readText("xl/workbook.xml"), "工作簿");
+    var relationshipsXml = parseXml(await readText("xl/_rels/workbook.xml.rels"), "工作簿关系");
+    var sharedText = await readText("xl/sharedStrings.xml", true);
+    var sharedStrings = parseSharedStrings(sharedText ? parseXml(sharedText, "共享文本") : null);
+    var relationshipTargets = new Map();
+    Array.from(relationshipsXml.getElementsByTagName("Relationship")).forEach(function (relationship) {
+      relationshipTargets.set(relationship.getAttribute("Id"), relationship.getAttribute("Target"));
+    });
+
+    var sheetNodes = Array.from(workbookXml.getElementsByTagName("sheet"));
+    if (!sheetNodes.length) throw new Error("工作簿中没有工作表。");
+    var sheets = [];
+    for (var i = 0; i < Math.min(sheetNodes.length, 2); i += 1) {
+      var relationshipId = sheetNodes[i].getAttribute("r:id") || sheetNodes[i].getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id");
+      var target = relationshipTargets.get(relationshipId);
+      if (!target) throw new Error("无法找到第 " + (i + 1) + " 个工作表。");
+      var path = normalizePath("xl", target);
+      sheets.push(parseSheet(parseXml(await readText(path), "工作表"), sharedStrings));
+    }
+
+    var primary = matrixFromRows(sheets[0]);
+    var ourDecks = primary.rowNames;
+    var opponentDecks = primary.columnNames;
+    if (!ourDecks.length || !opponentDecks.length) {
+      throw new Error("第一页应从 A2 向下填写我方卡组，并从 B1 向右填写对手卡组。");
+    }
+    assertUniqueLabels(ourDecks, "第一页我方卡组");
+    assertUniqueLabels(opponentDecks, "第一页对手卡组");
+    var rates = ourDecks.map(function (_, row) {
+      return opponentDecks.map(function (_, column) {
+        return primary.values[row][column];
+      });
+    });
+    var opponentRates = sheets[1]
+      ? mapOpponentRates(matrixFromRows(sheets[1]), ourDecks, opponentDecks)
+      : ourDecks.map(function () { return opponentDecks.map(function () { return null; }); });
+
+    return {
+      ourDecks: ourDecks,
+      opponentDecks: opponentDecks,
+      rates: rates,
+      opponentRates: opponentRates,
+      demo: false
+    };
+  }
+
+  root.importMatchupWorkbook = importMatchupWorkbook;
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = importMatchupWorkbook;
+  }
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+  <script>(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.StrategyEngine = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  var EPS = 1e-10;
+
+  function fail(message) {
+    throw new Error('StrategyEngine: ' + message);
+  }
+
+  function probability(value, label) {
+    if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 1) {
+      fail(label + ' 必须是 0 到 1 之间的有限数字');
+    }
+    return value;
+  }
+
+  function validateNames(names, length, label) {
+    if (names == null) return Array.from({ length: length }, function (_, i) { return label + (i + 1); });
+    if (!Array.isArray(names) || names.length !== length) fail(label + '名称数量必须为 ' + length);
+    var normalized = names.map(function (name, i) {
+      if (typeof name !== 'string' || name.trim() === '') fail(label + '名称第 ' + (i + 1) + ' 项不能为空');
+      return name.trim();
+    });
+    if (new Set(normalized).size !== normalized.length) fail(label + '名称不能重复');
+    return normalized;
+  }
+
+  function validateInput(input) {
+    if (!input || typeof input !== 'object' || Array.isArray(input)) fail('输入必须是对象');
+    if (!Array.isArray(input.rates) || input.rates.length < 4 || input.rates.length > 6) {
+      fail('我方卡组数量必须为 4 到 6');
+    }
+    var rows = input.rates.length;
+    if (!Array.isArray(input.rates[0]) || input.rates[0].length < 4 || input.rates[0].length > 6) {
+      fail('对手卡组数量必须为 4 到 6');
+    }
+    var cols = input.rates[0].length;
+    var rates = input.rates.map(function (row, i) {
+      if (!Array.isArray(row) || row.length !== cols) fail('rates 必须是规则矩阵');
+      return row.map(function (value, j) { return probability(value, 'rates[' + i + '][' + j + ']'); });
+    });
+
+    var correction = input.correction == null ? 0.2 : probability(input.correction, 'correction');
+    var supplied = input.opponentRates;
+    if (supplied != null && (!Array.isArray(supplied) || supplied.length !== rows)) {
+      fail('opponentRates 行数必须与 rates 相同');
+    }
+    var fallbackCount = 0;
+    var opponentRates = rates.map(function (row, i) {
+      if (supplied != null && (!Array.isArray(supplied[i]) || supplied[i].length !== cols)) {
+        fail('opponentRates 必须与 rates 尺寸相同');
+      }
+      return row.map(function (p, j) {
+        var value = supplied == null ? null : supplied[i][j];
+        if (value === null || value === undefined || value === '') {
+          fallbackCount += 1;
+          return Math.max(0, Math.min(1, 1 - p + correction));
+        }
+        return probability(value, 'opponentRates[' + i + '][' + j + ']');
+      });
+    });
+
+    var pairing = input.pairing == null ? 'ordered' : input.pairing;
+    var mode = input.mode == null ? 'robust' : input.mode;
+    if (pairing !== 'ordered' && pairing !== 'random') fail("pairing 必须是 'ordered' 或 'random'");
+    if (mode !== 'robust' && mode !== 'predictive') fail("mode 必须是 'robust' 或 'predictive'");
+    var excluded = input.excludedOurIndices == null ? [] : input.excludedOurIndices;
+    if (!Array.isArray(excluded) || excluded.some(function (i) { return !Number.isInteger(i) || i < 0 || i >= rows; }) || new Set(excluded).size !== excluded.length) fail('excludedOurIndices 必须是不重复的我方卡组索引');
+    if (rows - excluded.length < 4) fail('除去“我不想上”的卡组后至少需要 4 套我方卡组');
+    var topN = input.topN == null ? 5 : input.topN;
+    if (topN !== 'all' && (!Number.isInteger(topN) || topN < 1 || topN > 6)) fail('topN 必须是 1 到 6 或 all');
+
+    return {
+      rates: rates,
+      opponentRates: opponentRates,
+      correction: correction,
+      pairing: pairing,
+      mode: mode,
+      excludedOurIndices: excluded.slice(),
+      topN: topN === 'all' ? cols : Math.min(topN, cols),
+      ourNames: validateNames(input.ourNames, rows, '我方卡组'),
+      opponentNames: validateNames(input.opponentNames, cols, '对手卡组'),
+      fallbackCount: fallbackCount,
+    };
+  }
+
+  function combinations(values) {
+    var result = [];
+    for (var i = 0; i < values.length - 2; i += 1) {
+      for (var j = i + 1; j < values.length - 1; j += 1) {
+        for (var k = j + 1; k < values.length; k += 1) result.push([values[i], values[j], values[k]]);
+      }
+    }
+    return result;
+  }
+
+  function permutations3(values) {
+    var result = [];
+    for (var i = 0; i < values.length; i += 1) {
+      for (var j = 0; j < values.length; j += 1) {
+        if (j === i) continue;
+        for (var k = 0; k < values.length; k += 1) {
+          if (k !== i && k !== j) result.push([values[i], values[j], values[k]]);
+        }
+      }
+    }
+    return result;
+  }
+
+  function lineups(count, banned, pairing) {
+    var remaining = [];
+    for (var i = 0; i < count; i += 1) if (i !== banned) remaining.push(i);
+    return pairing === 'ordered' ? permutations3(remaining) : combinations(remaining);
+  }
+
+  function teamWin(x, y, z) {
+    return x * y + x * z + y * z - 2 * x * y * z;
+  }
+
+  var MATCHINGS = [
+    [0, 1, 2], [0, 2, 1], [1, 0, 2],
+    [1, 2, 0], [2, 0, 1], [2, 1, 0],
+  ];
+
+  function matchup(matrix, ours, theirs, pairing) {
+    if (pairing === 'ordered') {
+      return teamWin(matrix[ours[0]][theirs[0]], matrix[ours[1]][theirs[1]], matrix[ours[2]][theirs[2]]);
+    }
+    var total = 0;
+    for (var m = 0; m < MATCHINGS.length; m += 1) {
+      var order = MATCHINGS[m];
+      total += teamWin(
+        matrix[ours[0]][theirs[order[0]]],
+        matrix[ours[1]][theirs[order[1]]],
+        matrix[ours[2]][theirs[order[2]]]
+      );
+    }
+    return total / MATCHINGS.length;
+  }
+
+  function greater(value, best) { return value > best + EPS; }
+  function tied(value, best) { return Math.abs(value - best) <= EPS; }
+
+  function allowedLineups(data, banned) {
+    return lineups(data.rates.length, banned, data.pairing).filter(function (order) {
+      return order.every(function (i) { return data.excludedOurIndices.indexOf(i) < 0; });
+    });
+  }
+
+  function rankedOptions(options) {
+    var seen = new Set();
+    return options.map(function (option, index) { option.index = index; return option; }).sort(function (a, b) {
+      return tied(a.score, b.score) ? a.index - b.index : b.score - a.score;
+    }).filter(function (option) {
+      var key = option.ourOrder.slice().sort(function (a, b) { return a - b; }).join(',');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 3).map(function (option) { delete option.index; return option; });
+  }
+
+  function assumptions(data) {
+    var list = [
+      '三场 BO1 相互独立，团队至少赢两场即获胜。',
+      '前三备选按三套卡组组合去重，每组只保留胜率最高的出战顺序；不足三种组合时仅展示实际数量。',
+      data.pairing === 'ordered'
+        ? '按给定出战顺序逐一配对；顺序不同视为不同纯策略。'
+        : '双方各选三套卡组，六种一一配对等概率并取平均。',
+      data.mode === 'robust'
+        ? '稳健模式使用纯策略 maximin，不计算混合策略均衡。'
+        : '预测模式用对手主观胜率预测其纯策略，并在并列最优策略间均匀分配；不计算混合策略均衡。',
+    ];
+    if (data.excludedOurIndices.length) list.push('“我不想上”仅限制我方实际出战，对手预测仍按完整公开卡组计算。');
+    if (data.fallbackCount) {
+      list.push('对手视角有 ' + data.fallbackCount + ' 个空值，按 clip(1 - 我方胜率 + ' + data.correction + ', 0, 1) 补全。');
+    } else {
+      list.push('对手视角胜率全部采用显式输入值。');
+    }
+    return list;
+  }
+
+  function buildGrid(data, ourLineups, opponentLineups, matrix) {
+    return ourLineups.map(function (ours) {
+      return opponentLineups.map(function (theirs) {
+        return matchup(matrix, ours, theirs, data.pairing);
+      });
+    });
+  }
+
+  function robustSolve(data) {
+    var strategyRows = [];
+    for (var b = 0; b < data.opponentRates[0].length; b += 1) {
+      var branches = [];
+      for (var a = 0; a < data.rates.length; a += 1) {
+        var ours = allowedLineups(data, a);
+        var theirs = lineups(data.rates[0].length, b, data.pairing);
+        var grid = buildGrid(data, ours, theirs, data.rates);
+        var bestScore = -Infinity;
+        var bestS = 0;
+        var bestT = 0;
+        var options = [];
+        for (var s = 0; s < ours.length; s += 1) {
+          var worst = Infinity;
+          var worstT = 0;
+          for (var t = 0; t < theirs.length; t += 1) {
+            if (grid[s][t] < worst - EPS) { worst = grid[s][t]; worstT = t; }
+          }
+          if (greater(worst, bestScore)) { bestScore = worst; bestS = s; bestT = worstT; }
+          options.push({ ourOrder: ours[s].slice(), score: worst, worstOpponentOrder: theirs[worstT].slice() });
+        }
+        branches.push({
+          bannedOurIndex: a,
+          ourOrder: ours[bestS].slice(),
+          score: bestScore,
+          worstOpponentOrder: theirs[bestT].slice(),
+          options: rankedOptions(options),
+        });
+      }
+      var overall = Infinity;
+      for (var i = 0; i < branches.length; i += 1) overall = Math.min(overall, branches[i].score);
+      strategyRows.push({ banOpponentIndex: b, score: overall, branches: branches });
+    }
+    return { probabilities: [], strategies: strategyRows };
+  }
+
+  function predictiveAnalysis(data) {
+    var analysis = [];
+    for (var a = 0; a < data.rates.length; a += 1) {
+      analysis[a] = [];
+      for (var b = 0; b < data.rates[0].length; b += 1) {
+        var ours = lineups(data.rates.length, a, data.pairing);
+        var theirs = lineups(data.rates[0].length, b, data.pairing);
+        var h = buildGrid(data, ours, theirs, data.opponentRates);
+        var values = [];
+        var best = -Infinity;
+        for (var t = 0; t < theirs.length; t += 1) {
+          var guaranteed = Infinity;
+          for (var s = 0; s < ours.length; s += 1) guaranteed = Math.min(guaranteed, h[s][t]);
+          values.push(guaranteed);
+          if (guaranteed > best) best = guaranteed;
+        }
+        var tiedT = [];
+        for (var ti = 0; ti < values.length; ti += 1) if (tied(values[ti], best)) tiedT.push(ti);
+        analysis[a][b] = { ours: ours, theirs: theirs, tIndexes: tiedT, value: best };
+      }
+    }
+    return analysis;
+  }
+
+  function predictiveSolve(data) {
+    var analysis = predictiveAnalysis(data);
+    var banValues = [];
+    var bestBanValue = -Infinity;
+    for (var a = 0; a < data.rates.length; a += 1) {
+      var value = Infinity;
+      for (var b = 0; b < data.rates[0].length; b += 1) value = Math.min(value, analysis[a][b].value);
+      banValues[a] = value;
+      if (value > bestBanValue) bestBanValue = value;
+    }
+    var bestBans = [];
+    for (var ai = 0; ai < banValues.length; ai += 1) if (tied(banValues[ai], bestBanValue)) bestBans.push(ai);
+    var probabilities = banValues.map(function (_, i) { return bestBans.indexOf(i) >= 0 ? 1 / bestBans.length : 0; });
+
+    var strategyRows = [];
+    for (var b = 0; b < data.rates[0].length; b += 1) {
+      var branches = [];
+      for (var a = 0; a < data.rates.length; a += 1) {
+        var item = analysis[a][b];
+        // Opponent analysis above deliberately uses the full public roster.
+        var actualOurs = allowedLineups(data, a);
+        var g = buildGrid(data, actualOurs, item.theirs, data.rates);
+        var bestScore = -Infinity;
+        var bestS = 0;
+        var options = [];
+        for (var s = 0; s < actualOurs.length; s += 1) {
+          var expected = 0;
+          for (var x = 0; x < item.tIndexes.length; x += 1) expected += g[s][item.tIndexes[x]];
+          expected /= item.tIndexes.length;
+          if (greater(expected, bestScore)) { bestScore = expected; bestS = s; }
+          options.push({ ourOrder: actualOurs[s].slice(), score: expected });
+        }
+        branches.push({
+          bannedOurIndex: a,
+          ourOrder: actualOurs[bestS].slice(),
+          score: bestScore,
+          options: rankedOptions(options),
+          predictedOpponentOrders: item.tIndexes.map(function (t) {
+            return { order: item.theirs[t].slice(), probability: 1 / item.tIndexes.length };
+          }),
+        });
+      }
+      var total = 0;
+      for (var a2 = 0; a2 < branches.length; a2 += 1) total += probabilities[a2] * branches[a2].score;
+      strategyRows.push({ banOpponentIndex: b, score: total, branches: branches });
+    }
+    return { probabilities: probabilities, strategies: strategyRows };
+  }
+
+  function solve(input) {
+    var data = validateInput(input);
+    var result = data.mode === 'robust' ? robustSolve(data) : predictiveSolve(data);
+    result.strategies.sort(function (left, right) {
+      if (Math.abs(right.score - left.score) <= EPS) return left.banOpponentIndex - right.banOpponentIndex;
+      return right.score - left.score;
+    });
+    return {
+      mode: data.mode,
+      pairing: data.pairing,
+      assumptions: assumptions(data),
+      opponentBanProbabilities: result.probabilities,
+      strategies: result.strategies.slice(0, data.topN),
+    };
+  }
+
+  return { solve: solve };
+});
+</script>
+  <script>(function(root,factory){var api=factory();if(typeof module==='object'&&module.exports)module.exports=api;if(root)root.RateEdit=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  function checkAmount(mode,amount){
+    if(typeof amount!=='number'||!Number.isFinite(amount))throw new Error('请输入有效的调整数值');
+    if(mode==='set'){if(amount<0||amount>100)throw new Error('固定胜率必须为 0–100%');}
+    else if(mode==='relative'){if(amount < -100)throw new Error('按比例减少不能低于 -100%');}
+    else if(mode!=='points')throw new Error('未知调整方式');
+  }
+  function adjust(value,mode,amount){
+    checkAmount(mode,amount);
+    if(mode!=='set'&&(typeof value!=='number'||!Number.isFinite(value)||value<0||value>1))throw new Error('原胜率必须为 0–1');
+    var raw=mode==='set'?amount/100:mode==='points'?value+amount/100:value*(1+amount/100);
+    return {value:Math.round(Math.max(0,Math.min(1,raw))*1e12)/1e12,clipped:raw<0||raw>1};
+  }
+  // Matrices always use our row / opponent column, even when the UI is transposed.
+  function plan(input){
+    checkAmount(input.mode,input.amount);
+    if(input.view!=='our'&&input.view!=='opponent')throw new Error('未知胜率视角');
+    if(input.axis!=='row'&&input.axis!=='column')throw new Error('请选择整行或整列');
+    var opponent=input.view==='opponent',axisIsOur=(input.axis==='row')!==opponent;
+    var targets=axisIsOur?input.ourIndices:input.opponentIndices;
+    if(!targets.includes(input.target))throw new Error('请选择要调整的卡组');
+    var matrix=opponent?input.opponentRates:input.rates,changes=[],skipped=0,clipped=0,automatic=0;
+    input.ourIndices.forEach(function(row){input.opponentIndices.forEach(function(col){
+      if((axisIsOur?row:col)!==input.target)return;
+      var value=matrix[row][col],auto=opponent&&value==null;
+      if(auto){var base=input.rates[row][col];value=base==null?null:Math.max(0,Math.min(1,1-base+input.correction));}
+      if(input.mode!=='set'&&value==null){skipped+=1;return;}
+      var result=adjust(value,input.mode,input.amount);changes.push({row:row,col:col,value:result.value});
+      if(result.clipped)clipped+=1;if(auto)automatic+=1;
+    });});
+    return {changes:changes,skipped:skipped,clipped:clipped,automatic:automatic};
+  }
+  return {adjust:adjust,plan:plan};
+});
+</script>
+  <script>(function(root,factory){var api=factory();if(typeof module==='object'&&module.exports)module.exports=api;if(root)root.MatchupWorkbook=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
+  'use strict';
+  var encoder=new TextEncoder();
+  function xml(value){return String(value).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function validate(data){
+    ['ourDecks','opponentDecks'].forEach(function(key){var names=data&&data[key];if(!Array.isArray(names)||!names.length||names.length>100)throw new Error('双方卡组池各需 1–100 套');var seen=new Set();names.forEach(function(name){if(typeof name!=='string'||!name.trim()||name.length>100||seen.has(name.trim().toLocaleLowerCase()))throw new Error('卡组名称为空、重复或过长');seen.add(name.trim().toLocaleLowerCase());});});
+    ['rates','opponentRates'].forEach(function(key){var matrix=data[key];if(key==='opponentRates'&&matrix==null)return;if(!Array.isArray(matrix)||matrix.length!==data.ourDecks.length)throw new Error('胜率矩阵行数不匹配');matrix.forEach(function(row){if(!Array.isArray(row)||row.length!==data.opponentDecks.length)throw new Error('胜率矩阵列数不匹配');row.forEach(function(value){if(value!==null&&(typeof value!=='number'||!Number.isFinite(value)||value<0||value>1))throw new Error('胜率必须为 0–1 数字或空白');});});});
+  }
+  function col(index){var result='';for(var n=index+1;n>0;n=Math.floor((n-1)/26))result=String.fromCharCode(65+(n-1)%26)+result;return result;}
+  function sheet(rows){
+    var body=rows.map(function(row,r){return '<row r="'+(r+1)+'" ht="26" customHeight="1">'+row.map(function(value,c){var ref=col(c)+(r+1),header=r===0||c===0;if(value==null)return '<c r="'+ref+'" s="2"/>';if(typeof value==='number')return '<c r="'+ref+'" s="2"><v>'+value+'</v></c>';return '<c r="'+ref+'" t="inlineStr" s="'+(header?1:0)+'"><is><t xml:space="preserve">'+xml(value)+'</t></is></c>';}).join('')+'</row>';}).join('');
+    return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><dimension ref="A1:'+col(rows[0].length-1)+rows.length+'"/><sheetViews><sheetView workbookViewId="0"><pane xSplit="1" ySplit="1" topLeftCell="B2" activePane="bottomRight" state="frozen"/></sheetView></sheetViews><cols><col min="1" max="1" width="24" customWidth="1"/><col min="2" max="'+rows[0].length+'" width="18" customWidth="1"/></cols><sheetData>'+body+'</sheetData></worksheet>';
+  }
+  var crcTable=Array.from({length:256},function(_,i){var n=i;for(var k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
+  function crc(bytes){var n=0xffffffff;for(var i=0;i<bytes.length;i++)n=crcTable[(n^bytes[i])&255]^(n>>>8);return (n^0xffffffff)>>>0;}
+  function zip(files){
+    var parts=[],central=[],offset=0;
+    Object.keys(files).forEach(function(name){var file=encoder.encode(files[name]),label=encoder.encode(name),checksum=crc(file),local=new Uint8Array(30+label.length),v=new DataView(local.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint16(12,33,true);v.setUint32(14,checksum,true);v.setUint32(18,file.length,true);v.setUint32(22,file.length,true);v.setUint16(26,label.length,true);local.set(label,30);parts.push(local,file);
+      var entry=new Uint8Array(46+label.length),cv=new DataView(entry.buffer);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x800,true);cv.setUint16(14,33,true);cv.setUint32(16,checksum,true);cv.setUint32(20,file.length,true);cv.setUint32(24,file.length,true);cv.setUint16(28,label.length,true);cv.setUint32(42,offset,true);entry.set(label,46);central.push(entry);offset+=local.length+file.length;
+    });
+    var centralLength=central.reduce(function(n,p){return n+p.length;},0),end=new Uint8Array(22),ev=new DataView(end.buffer);ev.setUint32(0,0x06054b50,true);ev.setUint16(8,central.length,true);ev.setUint16(10,central.length,true);ev.setUint32(12,centralLength,true);ev.setUint32(16,offset,true);
+    var output=new Uint8Array(offset+centralLength+22),position=0;parts.concat(central,[end]).forEach(function(part){output.set(part,position);position+=part.length;});return output;
+  }
+  function create(data){
+    validate(data);var ours=[['我方 / 对手'].concat(data.opponentDecks)].concat(data.ourDecks.map(function(name,i){return [name].concat(data.rates[i]);}));
+    var theirs=[['对手 / 我方'].concat(data.ourDecks)].concat(data.opponentDecks.map(function(name,j){return [name].concat(data.ourDecks.map(function(_,i){return data.opponentRates?data.opponentRates[i][j]:null;}));}));
+    var files={};
+    files['[Content_Types].xml']='<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>';
+    files['_rels/.rels']='<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+    files['xl/workbook.xml']='<?xml version="1.0"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="我方视角" sheetId="1" r:id="rId1"/><sheet name="对手视角" sheetId="2" r:id="rId2"/></sheets></workbook>';
+    files['xl/_rels/workbook.xml.rels']='<?xml version="1.0"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+    files['xl/styles.xml']='<?xml version="1.0"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Microsoft YaHei"/></font><font><b/><color rgb="FFFFFFFF"/><sz val="11"/><name val="Microsoft YaHei"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF0F5148"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="3"><xf fontId="0" fillId="0" borderId="0" numFmtId="0" xfId="0"/><xf fontId="1" fillId="2" borderId="0" numFmtId="0" xfId="0" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf fontId="0" fillId="0" borderId="0" numFmtId="10" xfId="0" applyNumberFormat="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+    files['xl/worksheets/sheet1.xml']=sheet(ours);files['xl/worksheets/sheet2.xml']=sheet(theirs);return zip(files);
+  }
+  return {create:create,validate:validate};
+});
+</script>
+  <script>(function(){
+  'use strict';
+  var STORAGE_KEY='team-strategy-state-v1';
+  var demo=window.DEMO_DATA||{ourDecks:[],opponentDecks:[],rates:[],opponentRates:[],demo:true};
+  var state=makeState(demo);
+  var matrixView='our';
+  var els={};
+  var nativeBridge=window.AndroidBridge||null;
+  var workbookVersion=null,loading=true,saveTimer=null,saveQueue=Promise.resolve();
+
+  function makeState(data){
+    var ours=(data.ourDecks||[]).map(String), opps=(data.opponentDecks||[]).map(String);
+    return {ourDecks:ours,opponentDecks:opps,selectedOur:ours.slice(0,Math.min(6,ours.length)),selectedOpponent:opps.slice(0,Math.min(6,opps.length)),rates:cloneMatrix(data.rates),opponentRates:cloneMatrix(data.opponentRates),customOpponents:[],excludedOur:[],topN:5,correction:.2,pairing:'ordered',mode:'predictive',demo:data.demo!==false,invalidCells:{}};
+  }
+  function cloneMatrix(m){return (m||[]).map(function(row){return (row||[]).map(function(v){return v==null?null:Number(v);});});}
+  function $(id){return document.getElementById(id);}
+  async function init(){
+    ['opponentResetTools','resetOpponentAll','bulkScope','bulkAxis','bulkTarget','bulkTargetLabel','bulkMode','bulkValue','bulkValueLabel','bulkHelp','applyBulk','bulkStatus','clearOpponent','editDeckSide','editDeckName','deckNameInput','addDeck','renameDeck','deleteDeck','excelSaveMode','saveExcelButton','excelSaveStatus','persistenceStatus','reloadWorkbook','workbookStatus','excludedOurList','availableOurCount','topN','resultTitle','engineDot','engineStatus','demoNotice','ourDeckList','opponentDeckList','ourCount','opponentCount','deckError','matrixWrap','matrixContext','matrixError','correction','correctionValue','correctionHelp','solveButton','saveButton','exportButton','importInput','excelInput','resetButton','saveStatus','emptyState','resultContent','resultList','resultSummary','addOpponentForm','newOpponentName'].forEach(function(id){els[id]=$(id);});
+    bindEvents(); restoreLocal(); refresh(); checkEngine();
+    document.querySelector("main").inert=true;
+    await restoreDisk();
+    await loadAnchoredWorkbook();
+    loading=false;document.querySelector("main").inert=false;
+    scheduleSave();
+  }
+  function mergeWorkbook(data){
+    var previous=serializable();
+    var selectedOur=previous.selectedOur.filter(function(name){return data.ourDecks.includes(name);}).slice(0,6);
+    var selectedOpponent=previous.selectedOpponent.filter(function(name){return data.opponentDecks.includes(name);}).slice(0,6);
+    if(selectedOur.length<4)selectedOur=data.ourDecks.slice(0,6);
+    if(selectedOpponent.length<4)selectedOpponent=data.opponentDecks.slice(0,6);
+    var excluded=previous.excludedOur.filter(function(name){return selectedOur.includes(name);});
+    if(selectedOur.length-excluded.length<4)excluded=[];
+    applyImported(Object.assign({},data,{selectedOur:selectedOur,selectedOpponent:selectedOpponent,excludedOur:excluded,topN:previous.topN,correction:previous.correction,pairing:previous.pairing,mode:previous.mode,demo:false}));
+  }
+  function nativeBytes(base64){var text=atob(base64),bytes=new Uint8Array(text.length);for(var i=0;i<text.length;i++)bytes[i]=text.charCodeAt(i);return bytes;}
+  function nativeBase64(bytes){var chunks=[];for(var i=0;i<bytes.length;i+=8192)chunks.push(String.fromCharCode.apply(null,bytes.subarray(i,i+8192)));return btoa(chunks.join(''));}
+  async function applyNativeWorkbook(payload,force){
+    if(payload.error)throw new Error(payload.error);
+    var data=await window.importMatchupWorkbook(nativeBytes(payload.base64));
+    if(force||payload.version!==workbookVersion)mergeWorkbook(data);
+    workbookVersion=payload.version;refresh();hideResults();els.workbookStatus.textContent='已读取手机文件：'+payload.name+'；胜率和设置自动保存在手机。';
+  }
+  window.onNativeWorkbook=async function(text){try{await applyNativeWorkbook(JSON.parse(text),true);scheduleSave();}catch(error){els.workbookStatus.textContent='读取失败：'+error.message;}};
+  window.onNativeExcelSaved=function(text){var result=JSON.parse(text);if(result.error){els.excelSaveStatus.textContent=result.error;return;}if(result.mode==='overwrite')workbookVersion=result.version;els.excelSaveStatus.textContent=result.cancelled?'已取消保存':'已保存文件：'+result.name+(result.backup?'（原文件已备份至应用私有目录）':'');scheduleSave();};
+  async function loadAnchoredWorkbook(){
+    if(nativeBridge){
+      try{var payload=JSON.parse(nativeBridge.readWorkbook());if(payload.empty){els.workbookStatus.textContent='手机离线模式：点击“选择手机 Excel”导入卡组与胜率；已有保存会自动恢复。';return;}await applyNativeWorkbook(payload,false);}catch(error){els.workbookStatus.textContent='手机 Excel 读取失败：'+error.message+'；保留已保存数据。';}return;
+    }
+    if(window.MOBILE_OFFLINE){els.workbookStatus.textContent='PC 离线版：导入 Excel 或 JSON 即可使用，修改后自动保存在当前浏览器。';return;}
+
+    if(window.location.protocol==='file:'){
+      els.workbookStatus.textContent='请双击项目根目录的“团队赛策略台.exe”启动，即可自动读取 Excel 并保存到项目文件夹。直接打开 HTML 时，仅使用浏览器保存和手动导入。';
+      return;
+    }
+    var main=document.querySelector('main');main.inert=true;
+    els.workbookStatus.textContent='正在读取锚定文件：团队赛卡组对局分析.xlsx…';
+    var controller=new AbortController(),timeout=setTimeout(function(){controller.abort();},15000);
+    try{
+      var response=await fetch('data/matchups.xlsx',{cache:'no-store',signal:controller.signal});
+      if(!response.ok)throw new Error(response.status===404?'未找到锚定文件':'读取失败（HTTP '+response.status+'）');
+      var data=await window.importMatchupWorkbook(await response.arrayBuffer());
+      var version=response.headers&&response.headers.get('X-Workbook-Version');
+      var useSaved=version&&version===workbookVersion;
+      if(!useSaved)mergeWorkbook(data);
+      workbookVersion=version||null;refresh();hideResults();
+      els.workbookStatus.textContent='已检查锚定 Excel：文件有更新时载入新卡组和胜率；未变更时恢复控制台已保存的胜率。界面修改默认自动保存到本机，点击“保存 Excel”可写入表格。';
+    }catch(error){
+      els.workbookStatus.textContent='未能自动载入团队赛卡组对局分析.xlsx：'+(error.name==='AbortError'?'读取超时':error.message)+'。当前保留本机保存或示例数据，可手动导入 Excel。';
+    }finally{clearTimeout(timeout);main.inert=false;}
+  }
+  function bindEvents(){
+    els.resetOpponentAll.addEventListener('click',function(){
+      state.opponentRates=state.ourDecks.map(function(){return state.opponentDecks.map(function(){return null;});});
+      Object.keys(state.invalidCells).forEach(function(key){if(key.indexOf('opponent-')===0)delete state.invalidCells[key];});
+      hideResults();renderMatrix();scheduleSave();els.bulkStatus.textContent='已将全部 '+(state.ourDecks.length*state.opponentDecks.length)+' 场对手视角胜率复位为自动补正（含未选卡组）。';
+    });
+    ['bulkScope','bulkAxis','bulkMode'].forEach(function(id){els[id].addEventListener('change',function(){renderBulkEditor();els.bulkStatus.textContent='';});});
+    els.applyBulk.addEventListener('click',applyBulk);
+
+    els.clearOpponent.addEventListener('click',function(){state.selectedOpponent=[];els.deckError.textContent='';hideResults();renderDecks();renderMatrix();scheduleSave();});
+    els.editDeckSide.addEventListener('change',renderDeckEditor);
+    els.addDeck.addEventListener('click',function(){editDeck('add');});
+    els.renameDeck.addEventListener('click',function(){editDeck('rename');});
+    els.deleteDeck.addEventListener('click',function(){editDeck('delete');});
+    els.saveExcelButton.addEventListener('click',saveExcel);
+
+    window.addEventListener('pagehide',function(){if(!loading)saveLocal();});
+    document.querySelector('main').addEventListener('input',function(event){if(!loading&&(event.target.classList.contains('rate-input')||event.target.id==='correction'))scheduleSave();});
+    document.querySelector('main').addEventListener('change',function(event){if(!loading&&event.target.type!=='file')scheduleSave();});
+    if(nativeBridge)els.reloadWorkbook.textContent='选择手机 Excel（授权读取/覆盖）';
+    els.reloadWorkbook.addEventListener('click',async function(){if(nativeBridge){nativeBridge.openWorkbook();return;}if(window.MOBILE_OFFLINE){els.excelInput.click();return;}loading=true;var oldVersion=workbookVersion;workbookVersion=null;await loadAnchoredWorkbook();if(workbookVersion===null)workbookVersion=oldVersion;loading=false;scheduleSave();});
+    els.addOpponentForm.addEventListener('submit',addOpponent);
+    els.topN.addEventListener('change',function(){state.topN=this.value==='all'?'all':Number(this.value);hideResults();});
+    document.querySelectorAll('.segment').forEach(function(btn){btn.addEventListener('click',function(){matrixView=btn.dataset.view;document.querySelectorAll('.segment').forEach(function(b){var active=b===btn;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});renderMatrix();});});
+    els.correction.addEventListener('input',function(){state.correction=Number(this.value);hideResults();updateCorrection();if(matrixView==='opponent')renderMatrix();});
+    document.querySelectorAll('input[name=pairing]').forEach(function(r){r.addEventListener('change',function(){if(r.checked){state.pairing=r.value;hideResults();}});});
+    document.querySelectorAll('input[name=mode]').forEach(function(r){r.addEventListener('change',function(){if(r.checked){state.mode=r.value;hideResults();}});});
+    els.solveButton.addEventListener('click',solve);
+    els.saveButton.addEventListener('click',saveLocal);
+    els.exportButton.addEventListener('click',exportJSON);
+    els.importInput.addEventListener('change',importJSON);
+    els.excelInput.addEventListener('change',importExcel);
+    els.resetButton.addEventListener('click',resetDemo);
+  }
+  function refresh(){
+    els.demoNotice.hidden=!state.demo;
+    els.correction.value=state.correction;
+    document.querySelector('input[name=pairing][value="'+state.pairing+'"]').checked=true;
+    document.querySelector('input[name=mode][value="'+state.mode+'"]').checked=true;
+    renderDecks();renderMatrix();updateCorrection();
+  }
+  function renderDecks(){
+    els.ourDeckList.innerHTML='';els.opponentDeckList.innerHTML='';
+    state.ourDecks.forEach(function(name){els.ourDeckList.appendChild(deckCard(name,'our',state.selectedOur.includes(name),false));});
+    state.opponentDecks.forEach(function(name){els.opponentDeckList.appendChild(deckCard(name,'opponent',state.selectedOpponent.includes(name),state.customOpponents.includes(name)));});
+    renderExclusions();updateCounts();updateTopN();renderDeckEditor();
+  }
+  function renderDeckEditor(){
+    var previous=els.editDeckName.value,names=els.editDeckSide.value==='opponent'?state.opponentDecks:state.ourDecks;
+    els.editDeckName.replaceChildren();names.forEach(function(name){var option=document.createElement('option');option.value=name;option.textContent=name;els.editDeckName.appendChild(option);});
+    if(names.includes(previous))els.editDeckName.value=previous;
+  }
+  function editDeck(action){
+    if(Object.keys(state.invalidCells).length){showError('请先修正无效胜率，再修改卡组池。');return;}
+    var side=els.editDeckSide.value==='opponent'?'opponent':'our',names=side==='our'?state.ourDecks:state.opponentDecks,name=els.deckNameInput.value.trim(),old=els.editDeckName.value,index=names.indexOf(old);
+    if(action!=='delete'&&(!name||names.some(function(n){return n.toLocaleLowerCase()===name.toLocaleLowerCase();}))){showError('请输入不重复的卡组名称。');return;}
+    if(action==='add'){
+      if(names.length>=100){showError('每方卡组池最多 100 套。');return;}
+      names.push(name);
+      if(side==='our'){state.rates.push(Array(state.opponentDecks.length).fill(null));state.opponentRates.push(Array(state.opponentDecks.length).fill(null));if(state.selectedOur.length<6)state.selectedOur.push(name);}
+      else{state.rates.forEach(function(row){row.push(null);});state.opponentRates.forEach(function(row){row.push(null);});state.customOpponents.push(name);if(state.selectedOpponent.length<6)state.selectedOpponent.push(name);}
+    }else{
+      if(index<0)return;
+      if(action==='delete'){
+        if(names.length<=1){showError('每方卡组池至少保留一套。');return;}
+        if(!window.confirm('删除“'+old+'”及其全部胜率？保存 Excel 后将同步删除。'))return;
+        names.splice(index,1);if(side==='our'){state.rates.splice(index,1);state.opponentRates.splice(index,1);}else{state.rates.forEach(function(row){row.splice(index,1);});state.opponentRates.forEach(function(row){row.splice(index,1);});}
+      }else names[index]=name;
+      (side==='our'?['selectedOur','excludedOur']:['selectedOpponent','customOpponents']).forEach(function(key){state[key]=state[key].map(function(n){return n===old?(action==='delete'?null:name):n;}).filter(function(n){return n!==null;});});
+      if(side==='our'&&state.selectedOur.length-state.excludedOur.length<4)state.excludedOur=[];
+    }
+    els.deckNameInput.value='';els.deckError.textContent='';hideResults();renderDecks();renderMatrix();scheduleSave();showStatus('卡组池已更新，点击“保存 Excel”可写入文件。');
+  }
+  function downloadFile(bytes,mime,name){
+    if(nativeBridge){nativeBridge.exportFile(nativeBase64(bytes),mime,name);return;}
+    var url=URL.createObjectURL(new Blob([bytes],{type:mime})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+  }
+  async function saveExcel(){
+    if(Object.keys(state.invalidCells).length){els.excelSaveStatus.textContent='请先修正所有无效胜率。';return;}
+    els.saveExcelButton.disabled=true;
+    try{
+      var data=serializable();window.MatchupWorkbook.validate(data);
+      var mode=els.excelSaveMode.value;
+      if(nativeBridge){nativeBridge.saveExcel(nativeBase64(window.MatchupWorkbook.create(data)),mode,workbookVersion||'');els.excelSaveStatus.textContent='请在手机文件选择器中完成保存。';return;}
+      if(window.location.protocol==='file:'||window.MOBILE_OFFLINE){
+        if(mode==='overwrite')throw new Error('直接打开 HTML 不能覆盖磁盘文件，请使用 EXE 或另存为新 Excel。');
+        downloadFile(window.MatchupWorkbook.create(data),'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','团队赛卡组对局分析.xlsx');els.excelSaveStatus.textContent='已生成新 Excel，请在下载位置查看。';return;
+      }
+      var response=await fetch('api/workbook',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:mode,data:data,expectedVersion:workbookVersion})});var result=await response.json();
+      if(!response.ok)throw new Error(result.error||'保存失败');
+      if(mode==='overwrite')workbookVersion=result.version;
+      els.excelSaveStatus.textContent='已保存：'+result.path+(result.backup?'；原文件备份：'+result.backup:'');scheduleSave();
+    }catch(error){els.excelSaveStatus.textContent=error.message;}finally{els.saveExcelButton.disabled=false;}
+  }
+  function updateTopN(){
+    els.topN.replaceChildren();
+    for(var i=1;i<=Math.max(state.selectedOpponent.length,state.topN==='all'?0:state.topN);i++){var option=document.createElement('option');option.value=i;option.textContent='前 '+i+' 个';els.topN.appendChild(option);}
+    var all=document.createElement('option');all.value='all';all.textContent='全部（'+state.selectedOpponent.length+' 个）';els.topN.appendChild(all);
+    // Keep the saved preference even when this match has fewer opponents.
+    els.topN.value=String(state.topN);
+  }
+  function renderExclusions(){
+    els.excludedOurList.replaceChildren();
+    state.selectedOur.forEach(function(name){
+      var label=document.createElement('label'),input=document.createElement('input'),text=document.createElement('span');
+      input.type='checkbox';input.checked=state.excludedOur.includes(name);text.textContent=name;
+      input.addEventListener('change',function(){
+        if(input.checked&&state.selectedOur.length-state.excludedOur.length<=4){showError('除去“我不想上”的卡组后，至少需要保留 4 套。');input.checked=false;return;}
+        if(input.checked)state.excludedOur.push(name);else state.excludedOur=state.excludedOur.filter(function(n){return n!==name;});
+        els.deckError.textContent='';hideResults();renderExclusions();
+      });
+      label.append(input,text);els.excludedOurList.appendChild(label);
+    });
+    els.availableOurCount.textContent='可出战 '+(state.selectedOur.length-state.excludedOur.length)+' 套';
+  }
+  function deckCard(name,side,selected,custom){
+    var label=document.createElement('label');label.className='deck-card'+(selected?' selected':'');label.title=name;
+    var input=document.createElement('input');input.type='checkbox';input.checked=selected;input.addEventListener('change',function(){toggleDeck(side,name,input.checked);});
+    var check=document.createElement('span');check.className='deck-check';
+    var text=document.createElement('span');text.className='deck-name';text.textContent=name;
+    label.append(input,check,text);
+    if(custom){var tag=document.createElement('span');tag.className='custom-tag';tag.textContent='临时';label.appendChild(tag);}
+    return label;
+  }
+  function toggleDeck(side,name,want){
+    var key=side==='our'?'selectedOur':'selectedOpponent', list=state[key];
+    if(want&&list.length>=6){showError('每方最多选择 6 套卡组。');renderDecks();return;}
+    if(side==='our'&&!want&&!state.excludedOur.includes(name)&&state.excludedOur.length&&list.length-state.excludedOur.length<=4){showError('除去“我不想上”的卡组后，至少需要保留 4 套。');renderDecks();return;}
+    if(side==='our'&&!want)state.excludedOur=state.excludedOur.filter(function(n){return n!==name;});
+    if(want&&!list.includes(name))list.push(name);if(!want)state[key]=list.filter(function(n){return n!==name;});
+    hideResults();renderDecks();renderMatrix();
+  }
+  function updateCounts(){
+    [['ourCount',state.selectedOur.length],['opponentCount',state.selectedOpponent.length]].forEach(function(x){els[x[0]].textContent=x[1]+' / 6';els[x[0]].classList.toggle('invalid',x[1]<4||x[1]>6);});
+  }
+  function addOpponent(e){
+    e.preventDefault();var name=els.newOpponentName.value.trim();
+    if(state.opponentDecks.length>=100){showError('对手卡组池最多 100 套。');return;}
+    if(!name)return;if(state.opponentDecks.some(function(n){return n.toLowerCase()===name.toLowerCase();})){showError('这个对手卡组已经存在。');return;}
+    state.opponentDecks.push(name);state.customOpponents.push(name);if(state.selectedOpponent.length<6)state.selectedOpponent.push(name);
+    state.rates.forEach(function(row){row.push(null);});state.opponentRates.forEach(function(row){row.push(null);});
+    els.newOpponentName.value='';hideResults();renderDecks();renderMatrix();scheduleSave();showStatus('已添加，请填写该卡组对阵所有已选我方卡组的胜率。');
+  }
+  function selectedIndices(names,selected){return selected.map(function(n){return names.indexOf(n);}).filter(function(i){return i>=0;});}
+  function matrixValue(row,col,view){var matrix=view==='our'?state.rates:state.opponentRates;return matrix[row]&&matrix[row][col]!=null?matrix[row][col]:null;}
+  function setMatrixValue(row,col,view,value){var matrix=view==='our'?state.rates:state.opponentRates;while(matrix.length<=row)matrix.push([]);matrix[row][col]=value;delete state.invalidCells[view+'-'+row+'-'+col];hideResults();}
+  function bulkIndices(){
+    var all=els.bulkScope.value==='pool';
+    return {ours:all?state.ourDecks.map(function(_,i){return i;}):selectedIndices(state.ourDecks,state.selectedOur),opponents:all?state.opponentDecks.map(function(_,i){return i;}):selectedIndices(state.opponentDecks,state.selectedOpponent)};
+  }
+  function renderBulkEditor(){
+    var indices=bulkIndices(),axisIsOur=(els.bulkAxis.value==='row')!==(matrixView==='opponent'),targets=axisIsOur?indices.ours:indices.opponents,previous=els.bulkTarget.value,names=axisIsOur?state.ourDecks:state.opponentDecks;
+    els.bulkTargetLabel.textContent=(axisIsOur?'我方':'对手')+'卡组（'+(els.bulkAxis.value==='row'?'行':'列')+'）';
+    els.bulkTarget.replaceChildren();targets.forEach(function(idx){var option=document.createElement('option');option.value=idx;option.textContent=names[idx];els.bulkTarget.appendChild(option);});
+    if(targets.some(function(idx){return String(idx)===previous;}))els.bulkTarget.value=previous;
+    els.applyBulk.disabled=!indices.ours.length||!indices.opponents.length;
+    var mode=els.bulkMode.value;els.bulkValue.removeAttribute('max');els.bulkValue.removeAttribute('min');
+    if(mode==='set'){els.bulkValueLabel.textContent='统一胜率（%）';els.bulkValue.min='0';els.bulkValue.max='100';els.bulkValue.placeholder='例如 50';els.bulkHelp.textContent='将指定行/列统一设为该胜率，例如输入 50 全部设为 50%，也可填充空白。';}
+    else if(mode==='points'){els.bulkValueLabel.textContent='增减值（百分点）';els.bulkValue.placeholder='例如 10 或 -10';els.bulkHelp.textContent='输入 10：50% → 60%；输入 -10：50% → 40%。结果限制在 0–100%。';}
+    else{els.bulkValueLabel.textContent='相对增减（%）';els.bulkValue.min='-100';els.bulkValue.placeholder='例如 10 或 -10';els.bulkHelp.textContent='输入 10：50% × 1.10 = 55%；输入 -10：50% × 0.90 = 45%。结果限制在 0–100%。';}
+    els.bulkHelp.textContent+=' 增减时跳过无原胜率的格子；对手自动估算格按当前补正值调整，调整后变为手动值，可复位。';
+  }
+  function applyBulk(){
+    try{
+      var raw=els.bulkValue.value.trim();if(!raw)throw new Error('请输入调整数值');
+      var indices=bulkIndices(),mode=els.bulkMode.value,target=Number(els.bulkTarget.value),axisIsOur=(els.bulkAxis.value==='row')!==(matrixView==='opponent');
+      if(!indices.ours.length||!indices.opponents.length)throw new Error('请先选择要调整的对局');
+      if(mode!=='set'){
+        var invalid=Object.keys(state.invalidCells).some(function(key){var parts=key.split('-'),r=Number(parts[1]),c=Number(parts[2]);return indices.ours.includes(r)&&indices.opponents.includes(c)&&(axisIsOur?r:c)===target&&(parts[0]===matrixView||matrixView==='opponent');});
+        if(invalid)throw new Error('指定行/列有无效输入，请先修正，或使用“统一设为固定胜率”覆盖。');
+      }
+      var plan=window.RateEdit.plan({rates:state.rates,opponentRates:state.opponentRates,correction:state.correction,view:matrixView,axis:els.bulkAxis.value,target:target,mode:mode,amount:Number(raw),ourIndices:indices.ours,opponentIndices:indices.opponents});
+      plan.changes.forEach(function(change){setMatrixValue(change.row,change.col,matrixView,change.value);});
+      renderMatrix();scheduleSave();els.bulkStatus.textContent='已调整 '+plan.changes.length+' 场'+(plan.skipped?'；跳过 '+plan.skipped+' 个无原胜率的格子':'')+(plan.clipped?'；'+plan.clipped+' 场已限制至 0–100%':'')+(plan.automatic?'；'+plan.automatic+' 个自动估算格已变为手动值':'')+'。';
+    }catch(error){els.bulkStatus.textContent=error.message;}
+  }
+  function renderMatrix(){
+    var rows=selectedIndices(state.ourDecks,state.selectedOur),cols=selectedIndices(state.opponentDecks,state.selectedOpponent);
+    renderBulkEditor();els.opponentResetTools.hidden=matrixView!=='opponent';
+    var opponent=matrixView==='opponent';els.matrixContext.textContent=opponent?'每格为对手卡组击败我方卡组的概率。留空时按补正规则自动估算。':'每格为我方卡组击败对手卡组的概率。临时添加的对手卡组必须完整填写。';
+    if(!rows.length||!cols.length){els.matrixWrap.innerHTML='<div class="empty-state"><p>请先选择双方卡组。</p></div>';return;}
+    var table=document.createElement('table');table.className='rate-table';
+    var thead=document.createElement('thead'),hr=document.createElement('tr'),corner=document.createElement('th');corner.textContent=opponent?'对手卡组 ↓ / 我方 →':'我方卡组 ↓ / 对手 →';hr.appendChild(corner);
+    var shownRows=opponent?cols:rows,shownCols=opponent?rows:cols;
+    shownCols.forEach(function(idx){var th=document.createElement('th');th.textContent=opponent?state.ourDecks[idx]:state.opponentDecks[idx];hr.appendChild(th);});thead.appendChild(hr);table.appendChild(thead);
+    var tbody=document.createElement('tbody');shownRows.forEach(function(ridx){var tr=document.createElement('tr'),name=document.createElement('td');name.textContent=opponent?state.opponentDecks[ridx]:state.ourDecks[ridx];tr.appendChild(name);shownCols.forEach(function(cidx){var ourRow=opponent?cidx:ridx,oppCol=opponent?ridx:cidx;tr.appendChild(rateCell(ourRow,oppCol,matrixView));});tbody.appendChild(tr);});table.appendChild(tbody);
+    els.matrixWrap.replaceChildren(table);
+  }
+  function rateCell(row,col,view){
+    var td=document.createElement('td'),wrap=document.createElement('div');wrap.className='rate-input-wrap';var input=document.createElement('input');input.className='rate-input';input.type='number';input.min='0';input.max='100';input.step='any';input.inputMode='decimal';input.setAttribute('aria-label',(view==='our'?'我方 '+state.ourDecks[row]+' 对手 '+state.opponentDecks[col]:'对手 '+state.opponentDecks[col]+' 对我方 '+state.ourDecks[row])+' 胜率百分比');
+    var key=view+'-'+row+'-'+col,value=matrixValue(row,col,view),isAuto=view==='opponent'&&value==null;if(Object.prototype.hasOwnProperty.call(state.invalidCells,key)){input.value=state.invalidCells[key];input.classList.add('invalid');}else if(isAuto){var base=matrixValue(row,col,'our');if(base!=null)input.value=Math.round(Math.min(1,1-base+state.correction)*1000)/10;input.placeholder='自动';input.classList.add('is-auto');}else if(value!=null)input.value=Math.round(value*1000)/10;
+    colorRate(input);input.addEventListener('input',function(){var raw=input.value.trim();if(resetButton)resetButton.disabled=false;hideResults();if(raw===''){setMatrixValue(row,col,view,null);if(resetButton)resetButton.disabled=true;input.className='rate-input'+(view==='opponent'?' is-auto':'');if(view==='opponent'){var base=matrixValue(row,col,'our');input.value=base==null?'':Math.round(Math.min(1,1-base+state.correction)*100);}colorRate(input);return;}var n=Number(raw),invalid=!Number.isFinite(n)||n<0||n>100;input.classList.toggle('invalid',invalid);if(invalid)state.invalidCells[key]=raw;else setMatrixValue(row,col,view,n/100);colorRate(input);});
+    var pct=document.createElement('span');pct.className='percent-mark';pct.textContent='%';wrap.append(input,pct);td.appendChild(wrap);
+    var resetButton;
+    if(view==='opponent'){
+      resetButton=document.createElement('button');resetButton.type='button';resetButton.className='rate-reset';resetButton.textContent='复位';resetButton.disabled=isAuto&&!Object.prototype.hasOwnProperty.call(state.invalidCells,key);resetButton.setAttribute('aria-label','对手 '+state.opponentDecks[col]+' 对我方 '+state.ourDecks[row]+' 复位为自动补正');
+      resetButton.addEventListener('click',function(){setMatrixValue(row,col,'opponent',null);renderMatrix();scheduleSave();els.bulkStatus.textContent='已复位：'+state.opponentDecks[col]+' 对 '+state.ourDecks[row]+'，随我方胜率和信心补正自动更新。';});td.appendChild(resetButton);
+    }
+    return td;
+  }
+  function colorRate(input){input.classList.remove('rate-low','rate-even','rate-high');var n=Number(input.value);if(input.value==='')return;if(n<45)input.classList.add('rate-low');else if(n>55)input.classList.add('rate-high');else input.classList.add('rate-even');}
+  function updateCorrection(){var pct=Math.round(state.correction*100);els.correctionValue.textContent='+'+pct+'%';els.correctionHelp.textContent='对手视角未填写的格子，将使用“我方败率 + '+pct+'%”估算，最高不超过 100%。';}
+  function validate(){
+    els.deckError.textContent='';els.matrixError.textContent='';
+    if(state.selectedOur.length<4||state.selectedOur.length>6||state.selectedOpponent.length<4||state.selectedOpponent.length>6){showError('请为双方各选择 4–6 套卡组。');scrollToSection('decks');return false;}
+    if(state.selectedOur.length-state.excludedOur.length<4){showError('除去“我不想上”的卡组后，至少需要保留 4 套。');scrollToSection('decks');return false;}
+    var rows=selectedIndices(state.ourDecks,state.selectedOur),cols=selectedIndices(state.opponentDecks,state.selectedOpponent),missing=[];
+    var activeInvalid=Object.keys(state.invalidCells).some(function(key){var parts=key.split('-'),r=Number(parts[1]),c=Number(parts[2]);return rows.includes(r)&&cols.includes(c);});
+    if(activeInvalid){els.matrixError.textContent='存在超出 0–100% 范围的胜率，请先修正红色输入框。';scrollToSection('matrix');return false;}
+    rows.forEach(function(r){cols.forEach(function(c){var custom=state.customOpponents.includes(state.opponentDecks[c]);if(matrixValue(r,c,'our')==null&&(custom||true))missing.push(state.ourDecks[r]+' × '+state.opponentDecks[c]);});});
+    if(missing.length){els.matrixError.textContent='我方视角仍有 '+missing.length+' 个胜率未填写（包括 '+missing.slice(0,2).join('、')+(missing.length>2?'…':'')+'）。';matrixView='our';document.querySelector('[data-view=our]').click();scrollToSection('matrix');return false;}
+    return true;
+  }
+  function buildPayload(){
+    var rows=selectedIndices(state.ourDecks,state.selectedOur),cols=selectedIndices(state.opponentDecks,state.selectedOpponent);
+    return {topN:state.topN,excludedOurIndices:state.excludedOur.map(function(name){return state.selectedOur.indexOf(name);}),rates:rows.map(function(r){return cols.map(function(c){return matrixValue(r,c,'our');});}),opponentRates:rows.map(function(r){return cols.map(function(c){return matrixValue(r,c,'opponent');});}),correction:state.correction,ourNames:state.selectedOur.slice(),opponentNames:state.selectedOpponent.slice(),pairing:state.pairing,mode:state.mode};
+  }
+  function checkEngine(){var ready=window.StrategyEngine&&typeof window.StrategyEngine.solve==='function';els.engineDot.className='status-dot '+(ready?'ready':'missing');els.engineStatus.textContent=ready?'计算引擎已就绪':'计算引擎待加载';return ready;}
+  function solve(){
+    if(!validate())return;if(!checkEngine()){els.emptyState.innerHTML='<div class="empty-mark">…</div><h2>计算引擎待加载</h2><p>界面数据已准备好，加载计算模块后即可生成真实推荐。</p>';scrollToSection('results');return;}
+    els.solveButton.disabled=true;els.solveButton.querySelector('span').textContent='正在计算…';
+    Promise.resolve().then(function(){return window.StrategyEngine.solve(buildPayload());}).then(function(result){renderResults(result);}).catch(function(err){els.emptyState.hidden=false;els.resultContent.hidden=true;els.emptyState.innerHTML='<div class="empty-mark">!</div><h2>暂时无法完成计算</h2><p>'+escapeText(err&&err.message?err.message:'计算模块返回异常，请检查输入。')+'</p>';}).finally(function(){els.solveButton.disabled=false;els.solveButton.querySelector('span').textContent='计算推荐策略';scrollToSection('results');});
+  }
+  function renderResults(result){
+    var list=result&&Array.isArray(result.strategies)?result.strategies:[];if(!list.length)throw new Error('没有找到合法策略，请检查卡组数量与胜率数据。');els.resultList.innerHTML='';
+    els.resultTitle.textContent='推荐策略 '+(state.topN==='all'?'全部（'+list.length+' 个）':'Top '+list.length);
+    var mode=result.mode||state.mode,pairing=result.pairing||state.pairing,banProbs=result.opponentBanProbabilities||[];
+    list.forEach(function(s,i){var card=document.createElement('article');card.className='result-card';var banName=state.selectedOpponent[s.banOpponentIndex]||'—';
+      card.innerHTML='<div class="rank"><small>RANK</small>#'+(i+1)+'</div><div class="strategy-main"><h3>禁用对手：'+escapeText(banName)+'</h3><div class="strategy-tags"><span class="tag ban">'+(mode==='robust'?'稳健保障':'主观预测')+'</span></div></div><div class="win-rate">'+formatRate(s.score)+'<small>'+(mode==='robust'?'保障胜率':'模型胜率')+'</small></div>';
+      var response=document.createElement('div');response.className='response-plan';response.innerHTML='<strong>我方实际被 Ban 后的应对（按不同卡组组合推荐）</strong><div class="branches">'+(s.branches||[]).map(function(b){return branchHTML(b,mode,pairing,banProbs);}).join('')+'</div>';card.appendChild(response);
+      if(i===0&&result.assumptions&&result.assumptions.length){var assumptions=document.createElement('div');assumptions.className='assumptions';assumptions.textContent='模型假设：'+result.assumptions.join('；');card.appendChild(assumptions);}els.resultList.appendChild(card);
+    });
+    els.resultSummary.textContent=(state.demo?'⚠ 随机示例数据，仅供体验 · ':'')+'所选模型内排名 · '+(mode==='robust'?'稳健保障':'假设对手采用主观保守策略')+' · '+(pairing==='ordered'?'同时暗排':'随机配对');els.resultSummary.classList.toggle('demo-result-warning',state.demo);els.emptyState.hidden=true;els.resultContent.hidden=false;
+  }
+  function branchHTML(branch,mode,pairing,banProbs){
+    var banned=state.selectedOur[branch.bannedOurIndex]||'未知卡组',names=(branch.ourOrder||[]).map(function(idx){return state.selectedOur[idx]||('?'+idx);}),separator=pairing==='ordered'?' → ':'、',detail='';
+    if(mode==='robust'&&branch.worstOpponentOrder)detail='；最坏对阵 '+branch.worstOpponentOrder.map(function(idx){return state.selectedOpponent[idx]||('?'+idx);}).join(separator);
+    if(mode==='predictive'&&Number.isFinite(banProbs[branch.bannedOurIndex]))detail='；被禁概率 '+formatRate(banProbs[branch.bannedOurIndex]);
+    if(mode==='predictive'&&branch.predictedOpponentOrders&&branch.predictedOpponentOrders.length){var predictions=branch.predictedOpponentOrders,lead=predictions[0],oppNames=(lead.order||[]).map(function(idx){return state.selectedOpponent[idx]||('?'+idx);});detail+='；对手候选对阵（示例） '+oppNames.join(separator)+(Number.isFinite(lead.probability)?'（'+formatRate(lead.probability)+'）':'')+(predictions.length>1?'，另含 '+(predictions.length-1)+' 种同模型情形':'');}
+    var options=branch.options||[branch];
+    return '<div class="branch-group"><strong>若 '+escapeText(banned)+' 被禁</strong>'+options.map(function(option,i){var order=option.ourOrder.map(function(idx){return state.selectedOur[idx];}).join(separator);var extra=detail;if(mode==='robust')extra='；最坏对阵 '+(option.worstOpponentOrder||[]).map(function(idx){return state.selectedOpponent[idx];}).join(separator);return '<div class="branch"><span class="branch-ban">第 '+(i+1)+' 选</span><span class="branch-order">'+escapeText(order)+'</span><span class="branch-score">'+formatRate(option.score)+escapeText(extra)+'</span></div>';}).join('')+'</div>';
+  }
+  function asArray(v){return Array.isArray(v)?v:(v==null?[]:[v]);}
+  function formatRate(v){var n=Number(v);if(!Number.isFinite(n))return '—';if(n<=1)n*=100;return n.toFixed(1)+'%';}
+  function escapeText(v){var d=document.createElement('div');d.textContent=v==null?'':String(v);return d.innerHTML;}
+  function serializable(){return {version:1,workbookVersion:workbookVersion,topN:state.topN,excludedOur:state.excludedOur,ourDecks:state.ourDecks,opponentDecks:state.opponentDecks,selectedOur:state.selectedOur,selectedOpponent:state.selectedOpponent,rates:state.rates,opponentRates:state.opponentRates,customOpponents:state.customOpponents,correction:state.correction,pairing:state.pairing,mode:state.mode,demo:state.demo};}
+  function scheduleSave(){
+    if(loading)return;clearTimeout(saveTimer);
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(serializable()));}catch(error){}
+    if(nativeBridge&&!Object.keys(state.invalidCells).length){var nativeSaved=JSON.parse(nativeBridge.saveState(JSON.stringify(serializable())));if(nativeSaved.error){els.persistenceStatus.textContent='手机保存失败：'+nativeSaved.error;return;}}
+    els.persistenceStatus.textContent='有修改，正在保存…';
+    saveTimer=setTimeout(function(){saveLocal();},450);
+  }
+  async function restoreDisk(){
+    if(nativeBridge){try{var raw=nativeBridge.readState();if(raw){applyImported(JSON.parse(raw));refresh();}}catch(error){els.persistenceStatus.textContent='手机保存读取失败：'+error.message;}return;}
+    if(window.location.protocol==='file:'||window.MOBILE_OFFLINE)return;
+    var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},5000);
+    try{
+      var response=await fetch('api/state',{cache:'no-store',signal:controller.signal});
+      if(response.status===404)return;
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      applyImported(await response.json());refresh();
+      els.persistenceStatus.textContent='已恢复项目文件夹中的胜率和默认设置。';
+    }catch(error){els.persistenceStatus.textContent='项目保存读取失败，暂用浏览器备份：'+error.message;}
+    finally{clearTimeout(timer);}
+  }
+  function saveLocal(){
+    clearTimeout(saveTimer);
+    if(Object.keys(state.invalidCells).length){els.persistenceStatus.textContent='存在无效胜率，请修正后保存。';return Promise.resolve();}
+    var snapshot=JSON.stringify(serializable()),browserSaved=false;
+    try{localStorage.setItem(STORAGE_KEY,snapshot);browserSaved=true;}catch(error){}
+    saveQueue=saveQueue.catch(function(){}).then(async function(){
+      if(nativeBridge){var result=JSON.parse(nativeBridge.saveState(snapshot));els.persistenceStatus.textContent=result.error?'手机保存失败：'+result.error:'已保存胜率和默认设置到手机';return;}
+      if(window.location.protocol==='file:'||window.MOBILE_OFFLINE){
+        els.persistenceStatus.textContent=browserSaved?'已保存到当前浏览器。使用 EXE 启动可保存到项目文件夹。':'保存失败，请导出 JSON 备份。';return;
+      }
+      var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},5000);
+      try{
+        var response=await fetch('api/state',{method:'PUT',headers:{'Content-Type':'application/json'},body:snapshot,signal:controller.signal,keepalive:true});
+        if(!response.ok)throw new Error('HTTP '+response.status);
+        els.persistenceStatus.textContent='已保存胜率和默认设置 · 项目文件夹 team-strategy/.local/state.json';
+      }catch(error){els.persistenceStatus.textContent='项目文件保存失败：'+error.message+(browserSaved?'；已保留浏览器备份。':'；请导出 JSON 备份。');}
+      finally{clearTimeout(timer);}
+    });
+    return saveQueue;
+  }
+  function restoreLocal(){try{var raw=localStorage.getItem(STORAGE_KEY);if(raw)applyImported(JSON.parse(raw),false);}catch(e){localStorage.removeItem(STORAGE_KEY);}}
+  function exportJSON(){downloadFile(new TextEncoder().encode(JSON.stringify(serializable(),null,2)),'application/json','team-strategy-'+new Date().toISOString().slice(0,10)+'.json');showStatus('请选择 JSON 保存位置。');}
+  function importJSON(e){var file=e.target.files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){try{var version=workbookVersion;applyImported(JSON.parse(reader.result),true);workbookVersion=version;refresh();hideResults();scheduleSave();showStatus('已导入 '+file.name+'。');}catch(err){showStatus('导入失败：'+err.message,true);}finally{e.target.value='';}};reader.readAsText(file);}
+  function importExcel(e){var file=e.target.files[0];if(!file)return;if(typeof window.importMatchupWorkbook!=='function'){showStatus('Excel 解析模块尚未加载。',true);e.target.value='';return;}file.arrayBuffer().then(window.importMatchupWorkbook).then(function(data){var version=workbookVersion;applyImported(data,false);workbookVersion=version;state.demo=false;refresh();hideResults();scheduleSave();showStatus('已导入 '+file.name+'。');}).catch(function(err){showStatus('Excel 导入失败：'+(err.message||'无法读取文件'),true);}).finally(function(){e.target.value='';});}
+  function normalizeDeckNames(value,label){
+    if(!Array.isArray(value))throw new Error(label+'必须是数组');var seen={};
+    return value.map(function(name,index){if(typeof name!=='string'||!name.trim())throw new Error(label+'第 '+(index+1)+' 项名称为空');var clean=name.trim(),key=clean.toLocaleLowerCase();if(seen[key])throw new Error(label+'存在重复名称：“'+clean+'”');seen[key]=true;return clean;});
+  }
+  function normalizeMatrix(value,rows,cols,label,optional){
+    if(value==null&&optional)return Array.from({length:rows},function(){return Array(cols).fill(null);});
+    if(!Array.isArray(value)||value.length!==rows)throw new Error(label+'行数应为 '+rows+'，实际为 '+(Array.isArray(value)?value.length:'非数组'));
+    return value.map(function(row,r){if(!Array.isArray(row)||row.length!==cols)throw new Error(label+'第 '+(r+1)+' 行应有 '+cols+' 列');return row.map(function(cell,c){if(cell===null)return null;if(typeof cell!=='number'||!Number.isFinite(cell)||cell<0||cell>1)throw new Error(label+'第 '+(r+1)+' 行第 '+(c+1)+' 列必须是 0–1 数值或 null');return cell;});});
+  }
+  function normalizeSelection(value,available,label,fallback){
+    if(value==null)return fallback.slice();if(!Array.isArray(value))throw new Error(label+'必须是数组');var seen={};
+    return value.map(function(name,index){if(typeof name!=='string'||!name.trim())throw new Error(label+'第 '+(index+1)+' 项无效');var clean=name.trim(),match=available.find(function(candidate){return candidate===clean;});if(!match)throw new Error(label+'包含未知卡组：“'+clean+'”');return match;}).filter(function(name){var key=name.toLocaleLowerCase();if(seen[key])return false;seen[key]=true;return true;});
+  }
+  function applyImported(data){
+    if(!data||typeof data!=='object')throw new Error('文件格式不正确');
+    var ourDecks=normalizeDeckNames(data.ourDecks,'我方卡组'),opponentDecks=normalizeDeckNames(data.opponentDecks,'对手卡组');
+    var cleaned={ourDecks:ourDecks,opponentDecks:opponentDecks,rates:normalizeMatrix(data.rates,ourDecks.length,opponentDecks.length,'我方胜率矩阵',false),opponentRates:normalizeMatrix(data.opponentRates,ourDecks.length,opponentDecks.length,'对手胜率矩阵',true),demo:data.demo===true};
+    var next=makeState(cleaned);next.selectedOur=normalizeSelection(data.selectedOur,ourDecks,'已选我方卡组',next.selectedOur);next.selectedOpponent=normalizeSelection(data.selectedOpponent,opponentDecks,'已选对手卡组',next.selectedOpponent);next.customOpponents=normalizeSelection(data.customOpponents,opponentDecks,'临时对手卡组',[]);next.correction=Number.isFinite(Number(data.correction))?Math.max(0,Math.min(.5,Number(data.correction))):.2;next.pairing=data.pairing==='random'?'random':'ordered';next.mode=data.mode==='robust'?'robust':'predictive';next.excludedOur=normalizeSelection(data.excludedOur,next.selectedOur,'我不想上的卡组',[]);if(next.excludedOur.length&&next.selectedOur.length-next.excludedOur.length<4)throw new Error('除去“我不想上”的卡组后至少需要 4 套');next.topN=data.topN==='all'?'all':(Number.isInteger(data.topN)&&data.topN>=1&&data.topN<=6?data.topN:5);state=next;workbookVersion=typeof data.workbookVersion==='string'?data.workbookVersion:null;
+  }
+  function resetDemo(){state=makeState(demo);localStorage.removeItem(STORAGE_KEY);refresh();hideResults();scheduleSave();showStatus('已恢复随机示例数据。');}
+  function hideResults(){els.emptyState.hidden=false;els.resultContent.hidden=true;}
+  function scrollToSection(id){var target=document.getElementById(id);if(target)target.scrollIntoView({behavior:'smooth',block:'start'});}
+  function showError(msg){els.deckError.textContent=msg;}
+  function showStatus(msg,error){els.saveStatus.textContent=msg;els.saveStatus.style.color=error?'var(--red)':'var(--teal)';clearTimeout(showStatus.timer);showStatus.timer=setTimeout(function(){els.saveStatus.textContent='';},3500);}
+  document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+</body>
+</html>

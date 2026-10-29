@@ -2,15 +2,25 @@
 
 支持 Windows、本地浏览器、Android / HarmonyOS 4 的离线团队赛 Ban/Pick 策略工具。
 
+## 成品下载（无需编译）
+
+- **Windows 双击即用**：[下载完整 Windows ZIP](https://github.com/L-skun/team-strategy/releases/download/v1.1.1/team-strategy-windows-v1.1.1.zip)。完整解压后双击“团队赛策略台.exe”，已附带运行环境。请不要仅取出 EXE。
+- **PC 单文件 HTML**：[直接下载](https://github.com/L-skun/team-strategy/releases/download/v1.1.1/team-strategy-pc-offline.html) · [仓库文件](downloads/团队赛策略台-PC离线版.html)。下载后双击打开，可导入/导出文件，数据自动保存在当前浏览器；自动锚定 Excel 和项目保存需使用完整 Windows 版。
+- **独立启动器 EXE**：[仓库文件](downloads/团队赛策略台.exe?raw=1)。它需要同目录的 team-strategy 文件夹及 runtime/node.exe，建议优先下载完整 ZIP。
+- **手机应用**：[安卓 / HarmonyOS 4 APK](downloads/团队赛策略台-安卓.apk?raw=1) · [手机单文件 HTML](downloads/团队赛策略台-手机离线版.html?raw=1)。
+- [查看全部发布附件](https://github.com/L-skun/team-strategy/releases/tag/v1.1.1)。
+
+PC 原始页面源码位于 [dist/index.html](dist/index.html)，需与同目录 JS/CSS 一起使用；单独下载该源码 HTML 不等于单文件离线版。
+
 ## 从 GitHub 下载后使用
 
 - 手机版：[安卓 APK 1.1.1](downloads/团队赛策略台-安卓.apk)，[单文件离线 HTML](downloads/团队赛策略台-手机离线版.html)。
 - PC 源码运行：安装 Node.js 18+ 后，在仓库目录运行 node serve.cjs，浏览器打开 [本地控制台](http://127.0.0.1:4173)。也可直接打开 dist/index.html 手动导入文件。
 - 将自己的 Excel 放在仓库文件夹的上一级，命名为“团队赛卡组对局分析.xlsx”，即可自动锚定；也可先从控制台另存一份表格再填写。
-- Windows EXE 通过 launcher/build.ps1 在仓库上一级生成。双击版需在 runtime/node.exe 放置 Node.js 运行文件；运行组件不提交到 Git。
+- Windows EXE 源码可通过 launcher/build.ps1 在仓库上一级生成；launcher/package-windows.ps1 可打包完整便携版。运行组件不提交到 Git，随 Release ZIP 分发。
 - [需求记录](docs/requirements.txt) · [使用说明](docs/usage.txt)。
 
-仓库包含源码、测试、构建脚本及手机分发文件；不包含实际胜率 Excel、本机保存、备份、手机签名密钥或编译工具缓存。
+仓库包含源码、测试、构建脚本、启动器 EXE、PC 单文件 HTML 及手机分发文件；不包含实际胜率 Excel、本机保存、备份、手机签名密钥或编译工具缓存。
 
 
 双击项目根目录的 `团队赛策略台.exe` 即可使用，自动在后台启动本地服务并打开默认浏览器，无需终端或额外安装 Node.js。不要单独移动 EXE，请将它与 `team-strategy` 文件夹、`团队赛卡组对局分析.xlsx` 放在同一个目录。
