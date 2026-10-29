@@ -104,7 +104,7 @@
 
   function parseXml(text, label) {
     var documentNode = new DOMParser().parseFromString(text, "application/xml");
-    if (documentNode.getElementsByTagName("parsererror").length) {
+    if (documentNode.getElementsByTagNameNS("*", "parsererror").length) {
       throw new Error("无法解析 XLSX 中的 " + label + "。");
     }
     return documentNode;
@@ -135,23 +135,23 @@
 
   function parseSharedStrings(xml) {
     if (!xml) return [];
-    return Array.from(xml.getElementsByTagName("si")).map(function (item) {
+    return Array.from(xml.getElementsByTagNameNS("*", "si")).map(function (item) {
       return item.textContent || "";
     });
   }
 
   function parseSheet(xml, sharedStrings) {
     var rows = [];
-    Array.from(xml.getElementsByTagName("c")).forEach(function (cell) {
+    Array.from(xml.getElementsByTagNameNS("*", "c")).forEach(function (cell) {
       var reference = cell.getAttribute("r") || "A1";
       var row = rowIndex(reference);
       var column = columnIndex(reference);
       var type = cell.getAttribute("t") || "n";
-      var valueNode = cell.getElementsByTagName("v")[0];
+      var valueNode = cell.getElementsByTagNameNS("*", "v")[0];
       var value = valueNode ? valueNode.textContent : null;
       if (type === "s") value = sharedStrings[Number(value)] == null ? "" : sharedStrings[Number(value)];
       else if (type === "inlineStr") {
-        var inlineNode = cell.getElementsByTagName("is")[0];
+        var inlineNode = cell.getElementsByTagNameNS("*", "is")[0];
         value = inlineNode ? inlineNode.textContent : "";
       } else if (type === "b") value = value === "1";
       else if ((type === "n" || !type) && value !== null && value !== "") value = Number(value);
@@ -254,11 +254,11 @@
     var sharedText = await readText("xl/sharedStrings.xml", true);
     var sharedStrings = parseSharedStrings(sharedText ? parseXml(sharedText, "共享文本") : null);
     var relationshipTargets = new Map();
-    Array.from(relationshipsXml.getElementsByTagName("Relationship")).forEach(function (relationship) {
+    Array.from(relationshipsXml.getElementsByTagNameNS("*", "Relationship")).forEach(function (relationship) {
       relationshipTargets.set(relationship.getAttribute("Id"), relationship.getAttribute("Target"));
     });
 
-    var sheetNodes = Array.from(workbookXml.getElementsByTagName("sheet"));
+    var sheetNodes = Array.from(workbookXml.getElementsByTagNameNS("*", "sheet"));
     if (!sheetNodes.length) throw new Error("工作簿中没有工作表。");
     var sheets = [];
     for (var i = 0; i < Math.min(sheetNodes.length, 2); i += 1) {

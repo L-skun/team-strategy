@@ -12,3 +12,6 @@
 .env
 .env.*
 *.xlsx
+
+# Only this fictional onboarding workbook is published.
+!/examples/团队赛胜率填写示例.xlsx

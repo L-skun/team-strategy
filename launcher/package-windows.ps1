@@ -1,4 +1,4 @@
-param([string]$Version='1.1.1')
+param([string]$Version='1.1.2')
 $ErrorActionPreference='Stop'
 if($Version -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}
 $projectDir=Split-Path -Parent $PSScriptRoot
@@ -14,6 +14,10 @@ Copy-Item -LiteralPath (Join-Path $projectDir 'dist') -Destination $packageProje
 Copy-Item -LiteralPath (Join-Path $projectDir 'serve.cjs') -Destination $packageProject
 Copy-Item -LiteralPath (Join-Path $projectDir 'runtime\node.exe') -Destination $packageRuntime
 Copy-Item -LiteralPath (Join-Path $projectDir 'runtime\node-LICENSE.txt') -Destination $packageRuntime
+$exampleFile=Join-Path $projectDir 'examples\团队赛胜率填写示例.xlsx'
+$packageExample=Join-Path $packageDir '团队赛胜率填写示例.xlsx'
+if(-not(Test-Path -LiteralPath $exampleFile)){throw 'Onboarding example workbook is missing'}
+Copy-Item -LiteralPath $exampleFile -Destination $packageExample
 $instructions=@"
 团队赛策略台 Windows 便携版 $Version
 
@@ -25,12 +29,13 @@ $instructions=@"
 6. 胜率与默认设置自动保存到 team-strategy/.local/state.json。覆盖 Excel 前会备份原文件。
 7. 直接打开 team-strategy/dist/index.html 也可手动使用，但自动读取 Excel、项目文件保存需要 EXE 启动。
 8. 本程序只监听本机，数据留在本机。迁移时复制整个文件夹，私有记录请自行保管。
+9. 随包附带“团队赛胜率填写示例.xlsx”，先阅读第三页填写说明。所有示例数据均为虚构；改好后可导入，或将副本改名为默认锚定文件。
 
 Node.js 许可证：team-strategy/runtime/node-LICENSE.txt
 fflate 许可证：team-strategy/dist/vendor/fflate-LICENSE.txt
 "@
 $instructions | Set-Content -LiteralPath (Join-Path $packageDir '使用说明.txt') -Encoding UTF8
-$privateFiles=Get-ChildItem -LiteralPath $packageDir -File -Recurse | Where-Object { $_.Extension -in '.xlsx','.jks','.keystore','.p12','.pfx' -or $_.Name -in 'state.json','password.txt' }
+$privateFiles=Get-ChildItem -LiteralPath $packageDir -File -Recurse | Where-Object { ($_.Extension -eq '.xlsx' -and $_.FullName -ne $packageExample) -or $_.Extension -in '.jks','.keystore','.p12','.pfx' -or $_.Name -in 'state.json','password.txt' }
 if($privateFiles){throw 'Private files found in distribution'}
 $zipPath=Join-Path $outputDir "team-strategy-windows-v$Version.zip"
 Compress-Archive -LiteralPath $packageDir -DestinationPath $zipPath -CompressionLevel Optimal -Force
