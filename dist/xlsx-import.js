@@ -49,6 +49,7 @@
       var flags = view.getUint16(offset + 8, true);
       var method = view.getUint16(offset + 10, true);
       var compressedSize = view.getUint32(offset + 20, true);
+      if(view.getUint32(offset+24,true)>25*1024*1024)throw new Error("XLSX 单个数据项超过 25 MB，请缩小文件。");
       var nameLength = view.getUint16(offset + 28, true);
       var extraLength = view.getUint16(offset + 30, true);
       var commentLength = view.getUint16(offset + 32, true);
@@ -73,6 +74,8 @@
     var extraLength = view.getUint16(offset + 28, true);
     var start = offset + 30 + nameLength + extraLength;
     var compressed = bytes.subarray(start, start + entry.compressedSize);
+    if(entry.method===8&&root.fflate)return root.fflate.inflateSync(compressed);
+    if(entry.method===8&&root.AndroidBridge){var chunks=[];for(var n=0;n<compressed.length;n+=8192)chunks.push(String.fromCharCode.apply(null,compressed.subarray(n,n+8192)));var result=JSON.parse(root.AndroidBridge.inflateRaw(btoa(chunks.join(''))));if(result.error)throw new Error(result.error);var decoded=atob(result.base64);return Uint8Array.from(decoded,function(c){return c.charCodeAt(0);});}
     if (entry.method === 0) return compressed;
     if (entry.method !== 8) throw new Error("XLSX 使用了不支持的 ZIP 压缩方式。");
     if (typeof DecompressionStream === "undefined") {
@@ -173,7 +176,7 @@
         return parseRate((rows[row + 1] || [])[column + 1], columnName(column + 1) + (row + 2));
       });
     });
-    return { rowNames: rowNames, columnNames: columnNames, values: values };
+    return { rowNames: rowNames, columnNames: columnNames, values: values, corner: cleanName(header[0]) };
   }
 
   function overlap(names, expected) {
@@ -215,10 +218,11 @@
     if (!normalValid && !transposedValid) {
       throw new Error("第二页包含未知卡组名称，或行列标题与第一页无法对应。");
     }
-    if (normalValid && transposedValid && normalScore === transposedScore) {
+    var direction = (matrix.corner || "").replace(/\s/g, "");
+    if (normalValid && transposedValid && normalScore === transposedScore && direction !== "对手/我方" && direction !== "我方/对手") {
       throw new Error("第二页方向不明确，请确保行、列至少包含一个能区分我方与对手的卡组名称。");
     }
-    var transposed = transposedValid && (!normalValid || transposedScore > normalScore);
+    var transposed = transposedValid && (!normalValid || transposedScore > normalScore || (normalScore === transposedScore && direction === "对手/我方"));
     var rowMap = indexByName(matrix.rowNames);
     var columnMap = indexByName(matrix.columnNames);
     return ourDecks.map(function (ourName) {

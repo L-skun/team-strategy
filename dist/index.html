@@ -22,6 +22,7 @@
     </header>
 
     <main>
+      <p class="matrix-context" id="workbookStatus" role="status" aria-live="polite"></p>
       <section class="notice" id="demoNotice" hidden>
         <span class="notice-icon">i</span>
         <div><strong>当前为随机示例数据</strong><p>结果仅用于体验流程，请导入或填写真实胜率后再用于决策。</p></div>
@@ -42,9 +43,10 @@
           <div class="deck-side">
             <div class="side-head"><h3>我方卡组</h3><span class="count" id="ourCount">0 / 6</span></div>
             <div class="deck-grid" id="ourDeckList"></div>
+            <div class="exclusions"><h4>我不想上 <small id="availableOurCount"></small></h4><p class="setting-note">勾选后不会出战，但对手仍认为这些卡组可能出战。排除后须至少保留 4 套；所有公开卡组的胜率仍需填写。</p><div id="excludedOurList" class="exclusion-list"></div></div>
           </div>
           <div class="deck-side opponent-side">
-            <div class="side-head"><h3>对手卡组</h3><span class="count" id="opponentCount">0 / 6</span></div>
+            <div class="side-head"><h3>对手卡组</h3><button type="button" class="button button-secondary" id="clearOpponent">全部取消选择</button><span class="count" id="opponentCount">0 / 6</span></div>
             <div class="deck-grid" id="opponentDeckList"></div>
             <form class="add-deck" id="addOpponentForm">
               <label class="sr-only" for="newOpponentName">新对手卡组名称</label>
@@ -53,6 +55,10 @@
             </form>
           </div>
         </div>
+        <details class="deck-editor"><summary>管理卡组池（新增、重命名、删除）</summary>
+          <div class="editor-fields"><label>修改哪方<select id="editDeckSide"><option value="our">我方</option><option value="opponent">对手</option></select></label><label>现有卡组<select id="editDeckName"></select></label><label>新名称<input id="deckNameInput" maxlength="100" placeholder="输入新增或修改后的名称"></label></div>
+          <div class="editor-actions"><button class="button button-secondary" id="addDeck">新增卡组</button><button class="button button-secondary" id="renameDeck">重命名所选卡组</button><button class="button button-text" id="deleteDeck">删除所选卡组及胜率</button></div>
+        </details>
         <p class="inline-error" id="deckError" role="alert"></p>
       </section>
 
@@ -65,6 +71,23 @@
           </div>
         </div>
         <div class="matrix-context" id="matrixContext"></div>
+        <div class="opponent-reset-tools" id="opponentResetTools" hidden>
+          <button type="button" class="button button-secondary" id="resetOpponentAll">全部复位为自动补正（含未选卡组）</button>
+          <p class="setting-note">单场可点击格子下方“复位”。复位后随我方胜率及信心补正自动变化。</p>
+        </div>
+        <details class="bulk-editor">
+          <summary>整行 / 整列批量调整胜率</summary>
+          <div class="bulk-fields">
+            <label>调整范围<select id="bulkScope"><option value="selected">当前表格中的对局</option><option value="pool">全部卡组池中的对局</option></select></label>
+            <label>方向<select id="bulkAxis"><option value="row">整行</option><option value="column">整列</option></select></label>
+            <label><span id="bulkTargetLabel">卡组</span><select id="bulkTarget"></select></label>
+            <label>调整方式<select id="bulkMode"><option value="set">统一设为固定胜率</option><option value="points">增减固定百分点</option><option value="relative">按原胜率比例增减</option></select></label>
+            <label><span id="bulkValueLabel">胜率（%）</span><input id="bulkValue" type="number" inputmode="decimal" step="any" min="0" max="100" placeholder="例如 50"></label>
+          </div>
+          <p class="setting-note" id="bulkHelp"></p>
+          <button type="button" class="button button-secondary" id="applyBulk">应用到指定行 / 列</button>
+        </details>
+        <p id="bulkStatus" class="matrix-context" role="status" aria-live="polite"></p>
         <div class="table-wrap" id="matrixWrap"></div>
         <div class="legend">
           <span><i class="legend-swatch low"></i>劣势</span>
@@ -76,23 +99,28 @@
       </section>
 
       <section class="panel settings-panel">
-        <div class="section-head compact"><div><p class="section-kicker">CALCULATION</p><h2>计算设置</h2></div></div>
+        <div class="section-head compact"><div><p class="section-kicker">CALCULATION</p><h2>计算与默认设置</h2></div></div>
         <div class="settings-grid">
+          <label class="field"><span>推荐 Ban 策略数量</span><select id="topN" aria-label="推荐 Ban 策略数量"></select></label>
           <label class="field"><span>胜率信心补正 <b id="correctionValue">+20%</b></span><input id="correction" type="range" min="0" max="0.5" step="0.01" value="0.2"></label>
           <fieldset class="field pairing-field"><legend>策略模型</legend><label><input type="radio" name="mode" value="predictive" checked><span>主观预测</span></label><label><input type="radio" name="mode" value="robust"><span>稳健保障</span></label></fieldset>
           <fieldset class="field pairing-field"><legend>出战配对方式</legend><label><input type="radio" name="pairing" value="ordered" checked><span>同时暗排</span></label><label><input type="radio" name="pairing" value="random"><span>随机配对</span></label></fieldset>
         </div>
+        <p class="setting-note">以下设置修改后自动保存，下次打开沿用，无需重新调整。</p>
         <p class="setting-note" id="correctionHelp">对手视角未填写的格子，将使用“我方败率 + 20%”估算，最高不超过 100%。</p>
       </section>
 
       <div class="action-row">
         <button class="button button-primary" id="solveButton"><span>计算推荐策略</span><small>比较所有合法组合</small></button>
-        <button class="button button-ghost" id="saveButton">保存到本机</button>
+        <button class="button button-ghost" id="saveButton">保存胜率和默认设置</button>
         <button class="button button-ghost" id="exportButton">导出 JSON</button>
         <label class="button button-ghost file-button">导入 JSON<input id="importInput" type="file" accept="application/json,.json"></label>
         <label class="button button-ghost file-button">导入 Excel<input id="excelInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
         <button class="button button-text" id="resetButton">重置示例</button>
       </div>
+      <section class="excel-save panel"><h3>保存卡组和胜率到 Excel</h3><p class="setting-note">保存整个卡组池及双方视角胜率，空白仍留空。输出为两张标准胜率表；覆盖时会先备份原文件，不保留原文件的其他工作表、公式或自定义格式。默认设置仍单独保存在本机。</p><div class="editor-actions"><label>保存方式<select id="excelSaveMode"><option value="new">另存为新 Excel</option><option value="overwrite">覆盖锚定 Excel（先备份）</option></select></label><button class="button button-secondary" id="saveExcelButton">保存 Excel</button></div><p id="excelSaveStatus" class="matrix-context" role="status" aria-live="polite"></p></section>
+      <p class="setting-note" id="persistenceStatus" role="status" aria-live="polite">胜率、卡组选择及默认设置在修改后自动保存。</p>
+      <button type="button" class="button button-ghost" id="reloadWorkbook">重新读取 Excel（覆盖界面胜率）</button>
       <p class="save-status" id="saveStatus" aria-live="polite"></p>
 
       <section class="results" id="results" aria-live="polite">
@@ -102,7 +130,7 @@
           <p>完成卡组与胜率设置后，点击“计算推荐策略”。</p>
         </div>
         <div id="resultContent" hidden>
-          <div class="results-head"><div><p class="section-kicker">RECOMMENDATION</p><h2>推荐策略 Top 5</h2></div><p id="resultSummary"></p></div>
+          <div class="results-head"><div><p class="section-kicker">RECOMMENDATION</p><h2 id="resultTitle">推荐策略</h2></div><p id="resultSummary"></p></div>
           <div class="result-list" id="resultList"></div>
         </div>
       </section>
@@ -110,8 +138,11 @@
     <footer>所有胜率均为模型估计，请结合阵容情报与临场判断。</footer>
   </div>
   <script src="demo-data.js"></script>
+  <script src="vendor/fflate-0.8.2.js"></script>
   <script src="xlsx-import.js"></script>
   <script src="engine.js"></script>
+  <script src="rate-edit.js"></script>
+  <script src="xlsx-export.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

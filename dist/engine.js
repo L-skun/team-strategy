@@ -68,6 +68,11 @@
     var mode = input.mode == null ? 'robust' : input.mode;
     if (pairing !== 'ordered' && pairing !== 'random') fail("pairing 必须是 'ordered' 或 'random'");
     if (mode !== 'robust' && mode !== 'predictive') fail("mode 必须是 'robust' 或 'predictive'");
+    var excluded = input.excludedOurIndices == null ? [] : input.excludedOurIndices;
+    if (!Array.isArray(excluded) || excluded.some(function (i) { return !Number.isInteger(i) || i < 0 || i >= rows; }) || new Set(excluded).size !== excluded.length) fail('excludedOurIndices 必须是不重复的我方卡组索引');
+    if (rows - excluded.length < 4) fail('除去“我不想上”的卡组后至少需要 4 套我方卡组');
+    var topN = input.topN == null ? 5 : input.topN;
+    if (topN !== 'all' && (!Number.isInteger(topN) || topN < 1 || topN > 6)) fail('topN 必须是 1 到 6 或 all');
 
     return {
       rates: rates,
@@ -75,6 +80,8 @@
       correction: correction,
       pairing: pairing,
       mode: mode,
+      excludedOurIndices: excluded.slice(),
+      topN: topN === 'all' ? cols : Math.min(topN, cols),
       ourNames: validateNames(input.ourNames, rows, '我方卡组'),
       opponentNames: validateNames(input.opponentNames, cols, '对手卡组'),
       fallbackCount: fallbackCount,
@@ -138,9 +145,28 @@
   function greater(value, best) { return value > best + EPS; }
   function tied(value, best) { return Math.abs(value - best) <= EPS; }
 
+  function allowedLineups(data, banned) {
+    return lineups(data.rates.length, banned, data.pairing).filter(function (order) {
+      return order.every(function (i) { return data.excludedOurIndices.indexOf(i) < 0; });
+    });
+  }
+
+  function rankedOptions(options) {
+    var seen = new Set();
+    return options.map(function (option, index) { option.index = index; return option; }).sort(function (a, b) {
+      return tied(a.score, b.score) ? a.index - b.index : b.score - a.score;
+    }).filter(function (option) {
+      var key = option.ourOrder.slice().sort(function (a, b) { return a - b; }).join(',');
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, 3).map(function (option) { delete option.index; return option; });
+  }
+
   function assumptions(data) {
     var list = [
       '三场 BO1 相互独立，团队至少赢两场即获胜。',
+      '前三备选按三套卡组组合去重，每组只保留胜率最高的出战顺序；不足三种组合时仅展示实际数量。',
       data.pairing === 'ordered'
         ? '按给定出战顺序逐一配对；顺序不同视为不同纯策略。'
         : '双方各选三套卡组，六种一一配对等概率并取平均。',
@@ -148,6 +174,7 @@
         ? '稳健模式使用纯策略 maximin，不计算混合策略均衡。'
         : '预测模式用对手主观胜率预测其纯策略，并在并列最优策略间均匀分配；不计算混合策略均衡。',
     ];
+    if (data.excludedOurIndices.length) list.push('“我不想上”仅限制我方实际出战，对手预测仍按完整公开卡组计算。');
     if (data.fallbackCount) {
       list.push('对手视角有 ' + data.fallbackCount + ' 个空值，按 clip(1 - 我方胜率 + ' + data.correction + ', 0, 1) 补全。');
     } else {
@@ -169,12 +196,13 @@
     for (var b = 0; b < data.opponentRates[0].length; b += 1) {
       var branches = [];
       for (var a = 0; a < data.rates.length; a += 1) {
-        var ours = lineups(data.rates.length, a, data.pairing);
+        var ours = allowedLineups(data, a);
         var theirs = lineups(data.rates[0].length, b, data.pairing);
         var grid = buildGrid(data, ours, theirs, data.rates);
         var bestScore = -Infinity;
         var bestS = 0;
         var bestT = 0;
+        var options = [];
         for (var s = 0; s < ours.length; s += 1) {
           var worst = Infinity;
           var worstT = 0;
@@ -182,12 +210,14 @@
             if (grid[s][t] < worst - EPS) { worst = grid[s][t]; worstT = t; }
           }
           if (greater(worst, bestScore)) { bestScore = worst; bestS = s; bestT = worstT; }
+          options.push({ ourOrder: ours[s].slice(), score: worst, worstOpponentOrder: theirs[worstT].slice() });
         }
         branches.push({
           bannedOurIndex: a,
           ourOrder: ours[bestS].slice(),
           score: bestScore,
           worstOpponentOrder: theirs[bestT].slice(),
+          options: rankedOptions(options),
         });
       }
       var overall = Infinity;
@@ -240,19 +270,24 @@
       var branches = [];
       for (var a = 0; a < data.rates.length; a += 1) {
         var item = analysis[a][b];
-        var g = buildGrid(data, item.ours, item.theirs, data.rates);
+        // Opponent analysis above deliberately uses the full public roster.
+        var actualOurs = allowedLineups(data, a);
+        var g = buildGrid(data, actualOurs, item.theirs, data.rates);
         var bestScore = -Infinity;
         var bestS = 0;
-        for (var s = 0; s < item.ours.length; s += 1) {
+        var options = [];
+        for (var s = 0; s < actualOurs.length; s += 1) {
           var expected = 0;
           for (var x = 0; x < item.tIndexes.length; x += 1) expected += g[s][item.tIndexes[x]];
           expected /= item.tIndexes.length;
           if (greater(expected, bestScore)) { bestScore = expected; bestS = s; }
+          options.push({ ourOrder: actualOurs[s].slice(), score: expected });
         }
         branches.push({
           bannedOurIndex: a,
-          ourOrder: item.ours[bestS].slice(),
+          ourOrder: actualOurs[bestS].slice(),
           score: bestScore,
+          options: rankedOptions(options),
           predictedOpponentOrders: item.tIndexes.map(function (t) {
             return { order: item.theirs[t].slice(), probability: 1 / item.tIndexes.length };
           }),
@@ -277,7 +312,7 @@
       pairing: data.pairing,
       assumptions: assumptions(data),
       opponentBanProbabilities: result.probabilities,
-      strategies: result.strategies.slice(0, Math.min(5, data.rates[0].length)),
+      strategies: result.strategies.slice(0, data.topN),
     };
   }
 

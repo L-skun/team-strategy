@@ -1,0 +1,14 @@
+/.local/
+/runtime/
+/mobile/.toolchain/
+/mobile/.build/
+/mobile/.signing/
+
+/.openai/
+*.jks
+*.keystore
+*.p12
+*.pfx
+.env
+.env.*
+*.xlsx

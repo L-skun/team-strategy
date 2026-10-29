@@ -30,10 +30,10 @@ const matchup = (matrix, s, t, pairing) => {
 };
 const close = (actual, expected, message) => assert.ok(Math.abs(actual - expected) < EPS, `${message}: ${actual} != ${expected}`);
 
-function bruteRobust(rates, pairing) {
+function bruteRobust(rates, pairing, excluded = []) {
   return Array.from({ length: rates[0].length }, (_, b) => {
     const branches = Array.from({ length: rates.length }, (_, a) => {
-      const ss = lineups(rates.length, a, pairing);
+      const ss = lineups(rates.length, a, pairing).filter((order) => order.every((i) => !excluded.includes(i)));
       const ts = lineups(rates[0].length, b, pairing);
       let picked = null;
       ss.forEach((s) => {
@@ -51,7 +51,7 @@ function bruteRobust(rates, pairing) {
   }).sort((x, y) => Math.abs(y.score - x.score) <= 1e-10 ? x.b - y.b : y.score - x.score).slice(0, 5);
 }
 
-function brutePredictive(rates, q, pairing) {
+function brutePredictive(rates, q, pairing, excluded = []) {
   const cells = Array.from({ length: rates.length }, () => Array(rates[0].length));
   for (let a = 0; a < rates.length; a++) for (let b = 0; b < rates[0].length; b++) {
     const ss = lineups(rates.length, a, pairing), ts = lineups(rates[0].length, b, pairing);
@@ -65,10 +65,11 @@ function brutePredictive(rates, q, pairing) {
   const rows = Array.from({ length: rates[0].length }, (_, b) => {
     const branches = cells.map((row, a) => {
       const cell = row[b];
-      const expected = cell.ss.map((s) => cell.tied.reduce((sum, t) => sum + matchup(rates, s, cell.ts[t], pairing), 0) / cell.tied.length);
+      const actualOurs = cell.ss.filter((order) => order.every((i) => !excluded.includes(i)));
+      const expected = actualOurs.map((s) => cell.tied.reduce((sum, t) => sum + matchup(rates, s, cell.ts[t], pairing), 0) / cell.tied.length);
       let best = 0;
       for (let s = 1; s < expected.length; s++) if (expected[s] > expected[best] + 1e-10) best = s;
-      return { score: expected[best], ourOrder: cell.ss[best], orders: cell.tied.map((t) => cell.ts[t]) };
+      return { score: expected[best], ourOrder: actualOurs[best], orders: cell.tied.map((t) => cell.ts[t]) };
     });
     return { b, score: branches.reduce((sum, branch, a) => sum + probabilities[a] * branch.score, 0), branches };
   });
@@ -238,4 +239,66 @@ test('6x6 worst-case modes finish promptly and retain legal complete branches', 
   validateBranches(robust, 6, 6);
   validateBranches(predictive, 6, 6);
   assert.ok(elapsed < 5000, `6x6 took ${elapsed.toFixed(0)}ms`);
+});
+
+
+test('topN supports every count and all, and validates private exclusions', () => {
+  const rates = matrix(6, 6);
+  for (const topN of [1, 2, 3, 4, 5, 6, 'all']) assert.equal(engine.solve({rates, topN}).strategies.length, topN === 'all' ? 6 : topN);
+  assert.equal(engine.solve({rates: matrix(4,4),topN:6}).strategies.length,4);
+  for (const topN of [0,7,1.5,'2']) assert.throws(() => engine.solve({rates,topN}), /topN/);
+  for (const excludedOurIndices of [[0,0],[-1],[6],[1.5],[0,1,2]]) assert.throws(() => engine.solve({rates,excludedOurIndices}));
+});
+
+for (const pairing of ['ordered','random']) for (const mode of ['robust','predictive']) {
+  test('private exclusions and ranked alternatives: '+mode+' '+pairing, () => {
+    const rates = matrix(6, 5), q = rates.map((row,i) => row.map((v,j) => (v+i*.11+j*.03)%1));
+    const excluded = [0, 4];
+    const input = {rates,opponentRates:q,excludedOurIndices:excluded,pairing,mode};
+    const before=structuredClone(input), result=engine.solve(input);
+    assert.deepEqual(input,before);
+    const expected = mode==='robust' ? bruteRobust(rates,pairing,excluded) : brutePredictive(rates,q,pairing,excluded).rows;
+    const publicPrediction=engine.solve({...input,excludedOurIndices:[]});
+    if(mode==='predictive') assert.deepEqual(result.opponentBanProbabilities,publicPrediction.opponentBanProbabilities);
+    result.strategies.forEach((strategy,i) => {
+      assert.equal(strategy.banOpponentIndex,expected[i].b);
+      close(strategy.score,expected[i].score,'private strategy score');
+      strategy.branches.forEach((branch,a) => {
+        close(branch.score,expected[i].branches[a].score,'private branch score');
+        const ss=lineups(rates.length,a,pairing).filter(order=>order.every(x=>!excluded.includes(x)));
+        const ts=lineups(rates[0].length,strategy.banOpponentIndex,pairing);
+        const predictions=branch.predictedOpponentOrders;
+        if(mode==='predictive') {
+          const publicBranch=publicPrediction.strategies.find(x=>x.banOpponentIndex===strategy.banOpponentIndex).branches[a];
+          assert.deepEqual(predictions,publicBranch.predictedOpponentOrders);
+        }
+        const bestByCombo=new Map();ss.forEach((order,index)=>{const candidate={order,index,score:mode==='robust'?Math.min(...ts.map(t=>matchup(rates,order,t,pairing))):predictions.reduce((sum,p)=>sum+p.probability*matchup(rates,order,p.order,pairing),0)};const key=order.slice().sort((a,b)=>a-b).join(',');const previous=bestByCombo.get(key);if(!previous||candidate.score>previous.score+1e-10)bestByCombo.set(key,candidate);});
+        const ranked=Array.from(bestByCombo.values()).sort((x,y)=>Math.abs(y.score-x.score)<=1e-10?x.index-y.index:y.score-x.score).slice(0,3);
+        assert.equal(branch.options.length,ranked.length);
+        branch.options.forEach((option,k)=>{
+          assert.deepEqual(option.ourOrder,ranked[k].order);
+          close(option.score,ranked[k].score,'ranked option');
+          if(mode==='robust') close(matchup(rates,option.ourOrder,option.worstOpponentOrder,pairing),option.score,'worst opponent');
+        });
+        assert.deepEqual(branch.ourOrder,branch.options[0].ourOrder);
+        close(branch.score,branch.options[0].score,'first option');
+      });
+    });
+  });
+}
+
+
+test('recommendations count distinct triples, not permutations, including complete ties',()=>{
+ for(const count of [4,5,6])for(const mode of ['robust','predictive'])for(const pairing of ['ordered','random']){
+  const rates=Array.from({length:count},()=>Array(4).fill(.5));
+  const result=engine.solve({rates,mode,pairing});
+  for(const strategy of result.strategies)for(const branch of strategy.branches){
+   const expected=Math.min(3,(count-1)*(count-2)*(count-3)/6);
+   assert.equal(branch.options.length,expected);
+   const keys=branch.options.map(option=>option.ourOrder.slice().sort((a,b)=>a-b).join(','));
+   assert.equal(new Set(keys).size,keys.length);
+   branch.options.forEach(option=>{assert.equal(option.score,.5);assert.ok(!option.ourOrder.includes(branch.bannedOurIndex));});
+   assert.deepEqual(branch.options[0].ourOrder,branch.ourOrder);
+  }
+ }
 });
